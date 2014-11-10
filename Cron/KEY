@@ -1,0 +1,13 @@
+0 Source SNOTEL,
+1 name SAGE CREEK BASIN,
+2 Given ID 2015:WY:SNTL,
+3 ele 7850,
+4 wind True,
+5 timezone -7,
+6 lat 41.401,
+7 long -107.25717,
+8 date 2014-11-07,
+9 depth 0,
+10 depth_change 0,
+11 water_equiv 0.1,
+12 water_equiv_change -0.1

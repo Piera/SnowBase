@@ -5,6 +5,8 @@ from sqlalchemy import create_engine, Column, ForeignKey, Float, Integer, String
 ENGINE = None
 Session = None
 
+ENGINE = create_engine("sqlite:///Snow.db", echo = False)
+session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
 Base = declarative_base()
 
 class Station(Base):
@@ -33,6 +35,8 @@ class Snow_Data(Base):
     depth_change = Column(Integer, nullable = True)
     water_equiv = Column(Float, nullable = True)
     water_equiv_change = Column(Float, nullable = True)
+    station = relationship("Station", backref=backref("snow_data", order_by=id))
+
 
 def add_data():
     global ENGINE

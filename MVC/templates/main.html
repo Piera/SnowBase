@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+
+        <title> Home Page </title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}"> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+        <script>
+        <script type="text/javascript"> 
+        // This is for Google Maps API search box.  WIP.
+            function initialize() 
+            {
+            var input = document.getElementById('searchTextField');
+                var options = 
+                {
+                    types : ['geocode']
+                };
+            var autocomplete = new google.maps.places.Autocomplete(input, options);
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+
+    </head>
+
+    <body>
+        
+       <!--  
+        This is for Google Maps API search box.  WIP.
+        <center>
+        <h2>Enter your location to find the closest snow to you:</h2>
+        <input id="searchTextField" type="text" size="100">
+        </center> -->
+
+        <br>   
+        <form class="form-horizontal", action = "{{ url_for('lookup') }}" method="post"><br>
+            <h4>Latitude:  <input type="text" name="lat"><br><br>
+            Longitude:  <input type="text" name="long"><br><br></h4>
+            <button type="submit" value="submit" id="lookup" class="btn">Find me the closest SnoTel Stations!</button>
+        </form>
+        <br>
+
+        <h4>Here are some locations to try:<br><br>
+        <ul><li>San Francisco Ferry Building, SF: 37.795483, -122.393306</li>
+        <li>Hollywood Sign, Los Angeles: 34.134115, -118.321548</li>
+        <li>Eureka, CA:  40.783229, -124.146220</li>
+        <li>Pinedale, WY: 42.865499, -109.870700</li>
+        <li>Salida, CO: 38.532853, -106.003459</li></ul>
+
+    </body>
+
+</html>

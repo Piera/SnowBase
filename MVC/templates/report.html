@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+
+        <title> Report Page </title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}"> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+        <script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+
+        <script type="text/javascript">
+              function initialize() {
+                var mapOptions = {
+                  center: { lat: 43.6008061, lng: -116.2338979},
+                  zoom: 5
+                };
+                var map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+                var marker = new google.maps.Marker({
+                    position: { lat: 43.6008061, lng: -116.2338979 },
+                    title: "HERE"
+                });
+              }
+              google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+
+    </head>
+
+    <body>
+
+    <h3>For reference, here is the starting point data being passed to this page:</h3><br>
+    <h4>Input Latitude:  {{ lat }}<br>
+    <h4>Input Longitude: {{ lng }}</h4><br>
+
+    <h3>Narrative:</h3><br>
+        <h4>The closest stations to your location are:<br/><br/>
+            {% for locations in closest_sta %}
+            <ul>
+                <li>The {{ locations.get('id') }} station is {{ locations.get('dist') }} miles away, snow depth: {{ locations.get('depth') }}".
+            </ul>
+            {% endfor %}
+        </h4><br>
+
+    <h3>Map:</h3><br>
+        <h4>Under construction<br/><br/>
+    <div id="map-canvas"></div>
+
+</html>

@@ -27,6 +27,7 @@ File notes:
 <li>seed.py: Seed table using reference file and/or by calling station APIs</li>
 <li>add.py: Add snow telemetry data to existing database. (Need to set up cron job for this).</li>
 <li>requirements.txt: Requirements for virtual environment.</li>
-<li>SnowDataParsed2014-11-08-0152Z.csv: Used to seed tables</li></ul>
+<li>SnowDataParsed2014-11-08-0152Z.csv: Used to seed tables</li>
+<li>Snow.db: Including db, for running finder.py</li></ul>
   
 

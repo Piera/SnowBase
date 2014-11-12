@@ -33,10 +33,10 @@
     <h4>Input Longitude: {{ lng }}</h4><br>
 
     <h3>Narrative:</h3><br>
-        <h4>The closest stations to your location are:<br/><br/>
+        <h4>These are the closest 10 SnoTel stations that are registering snow depth:<br/><br/>
             {% for locations in closest_sta %}
             <ul>
-                <li>The {{ locations.get('id') }} station is {{ locations.get('dist') }} miles away, snow depth: {{ locations.get('depth') }}".
+                <li>The {{ locations.get('name') }} station is {{ locations.get('dist') }} miles away, snow depth: {{ locations.get('depth') }}".
             </ul>
             {% endfor %}
         </h4><br>

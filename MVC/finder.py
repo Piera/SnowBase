@@ -5,6 +5,7 @@ import model
 import operator
 from haversine import distance
 from jinja2 import Template
+from sqlalchemy import desc
 from flask import Flask, render_template, request
 from model import session as dbsession
 
@@ -25,15 +26,15 @@ def lookup():
 	for counter in range(1, 868):
 		s = dbsession.query(model.Station).get(counter)
 		try: 
-			s.snow_data[0]
-			u = s.snow_data[0]
-			print s.id, s.given_id, s.latitude, s.longitude, u.sta_given_id, u.depth, u.depth_change
+			# s.snow_data[0]
+			u = s.snow_data[-1]
+			print s.id, s.given_id, s.name, s.latitude, s.longitude, u.sta_given_id, u.depth, u.depth_change, u.date
 			origin = float(l), float(g)
 			destination = float(s.latitude), float(s.longitude)
 			kms = int(distance(origin, destination))
 			mi = int(0.621371*kms)
 			if u.depth > 0:
-				dist_list.append({'dist':mi, 'id':s.given_id, 'depth':u.depth, 'depth_change':u.depth_change})
+				dist_list.append({'dist':mi, 'id':s.given_id, 'name':s.name, 'depth':u.depth, 'depth_change':u.depth_change})
 		except IndexError:
 			print s.id, s.given_id, s.latitude, s.longitude
 			origin = 34.134115, -118.321548

@@ -10,6 +10,7 @@ from sqlalchemy import Table, Column, Float, Integer, Boolean, String, MetaData,
 
 # Fill the database of snow data with daily telemetry data points
 def load_snow_data(session):
+	telemetry_data = None
 # 1. Open the list of URLs for the API calls, iterate the API calls
 	with open('/Users/pieradamonte/Dropbox/Hackbright/HBProject/Cron/APIurls.csv', 'rb') as csvfile:
 		snow_reader = csv.reader(csvfile)
@@ -30,7 +31,7 @@ def load_snow_data(session):
 						depth_change = int(snow_data['data'][0]['Change In Snow Depth (in)'])
 					if snow_data['data'][0]['Snow Water Equivalent (in)'] != None:
 						water_equiv = float(snow_data['data'][0]['Snow Water Equivalent (in)'])
-					if snow_data['data'][0]['Change In Snow Water Equivalent (in)'] !=None:
+					if snow_data['data'][0]['Change In Snow Water Equivalent (in)'] != None:
 						water_equiv_change = float(snow_data['data'][0]['Change In Snow Water Equivalent (in)'])
 					telemetry_data = model.Snow_Data(\
 						sta_given_id = triplet,\
@@ -45,6 +46,9 @@ def load_snow_data(session):
 						telemetry_data.water_equiv = water_equiv
 					if water_equiv_change != None:
 						telemetry_data.water_equiv_change = water_equiv_change
+				else:
+					# 'Snow Depth (in)' == None
+					continue
 			session.add(telemetry_data)
 		session.commit()
 

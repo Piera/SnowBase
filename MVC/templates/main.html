@@ -23,6 +23,7 @@
             geocoder.geocode( { 'address': address}, function(results, status) {
               if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
+                map.setZoom(8);
                 var marker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location
@@ -42,26 +43,49 @@
                   lng: lng
                 },
                 function (response) {
+                  console.log(response['closest'][2]['lat']);
                   // var marker = {};
                   // console.log(response);
                   //$("#snow_report").html(response);
                   // var positions = [];
-                  for (var i in response)
+                function getCircle(depth) {
+                                return {
+                                  path: google.maps.SymbolPath.CIRCLE,
+                                  fillColor: 'blue',
+                                  fillOpacity: .7,
+                                  // scale: Math.pow(2.2, depth) / Math.PI,
+                                  scale: depth*10/1.5,
+                                  strokeColor: 'blue',
+                                  strokeWeight: .9
+                                };
+                            }
+
+                  for (var i in response['closest'])
                   {
-                    console.log(response[i].lat,response[i].lng);
-                    var coordinates = new google.maps.LatLng(response[i].lat, response[i].lng);
-                    // positions.push(coordinates);
+                    // $('#snow_report').html("this is deep: " + response[i].depth + "<br>");
+                    console.log(response['closest'][i]['lat'],response['closest'][i]['lng']);
+                    var coordinates = new google.maps.LatLng(response['closest'][i]['lat'],response['closest'][i]['lng']);
+                    var marker_depth = response['closest'][i]['depth'];
+                    console.log(marker_depth);
+                    console.log(getCircle(marker_depth));
+                    // // positions.push(coordinates);
                     console.log(coordinates);
                     marker = new google.maps.Marker
                       ({
                     map: map,
                     position: coordinates,
-                    animation: google.maps.Animation.DROP,
-                    title: "Click to view data",
-                    id: response[i].name
+                    icon: getCircle(marker_depth)
                      });
                   }
-                  // console.log("Positions: " + positions);
+
+                  $('#snow_report').html("<br><h4>Snow Report:</h4><ul><li>The two stations closest to this location are the " + response['closest'][0]['name'] + " station that is " + response['closest'][0]['dist'] + " miles away, with " + response['closest'][0]['depth'] + " inches of snow, and the " + response['closest'][1]['name'] + " station that is " + response['closest'][1]['dist'] + " miles away, with " + response['closest'][1]['depth'] + " inches of snow.</li></ul>").addClass( "snow" );
+
+                  $('#snow_report').append(
+                    "<ul><li>Of these 10 closest stations, the stations reading most snow pack are the " + response['deepest'][0]['name'] + " station that is " + response['deepest'][0]['dist'] + " miles away, with " + response['deepest'][0]['depth'] + " inches of snow, and the " + response['deepest'][1]['name'] + " station that is " + response['deepest'][1]['dist'] + " miles away, with " + response['deepest'][1]['depth'] + " inches of snow.</li></ul>")
+
+                  $('#snow_report').append(
+                    "<ul><li>The stations with the most new snow are the " + response['most new'][0]['name'] + " station that is " + response['most new'][0]['dist'] + " miles away, with " + response['most new'][0]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow, and the " + response['most new'][1]['name'] + " station that is " + response['most new'][1]['dist'] + " miles away, with " + response['most new'][1]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow.</li></ul><br>")
+
                 },
                 "json"
               );
@@ -72,10 +96,11 @@
 
         function initialize() {
           geocoder = new google.maps.Geocoder();
-          var latlng = new google.maps.LatLng(37.8717, -122.2728);
+          var latlng = new google.maps.LatLng(38.48323, -109.2896);
           var mapOptions = {
             zoom: 5,
-            center: latlng
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
 
           }
           map = new google.maps.Map($('#map-canvas').get(0), mapOptions);
@@ -87,10 +112,10 @@
 
     <body>
 
-        <h4>Enter your current location</h4>
+        <h4>Enter Location:</h4>
         <div id="panel">
-            <input id="address" size="100" type="textbox" value="San Francisco, CA">
-            <input type="button" value="Find Snow" id="find_snow">
+            <input id="address" size="100" type="textbox" value="Echo Lake, CA">
+            <input type="button" value="Snow Report" id="find_snow">
         </div>
         <div id="map-canvas"></div>
         <div id="snow_report"></div>

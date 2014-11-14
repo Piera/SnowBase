@@ -1,12 +1,11 @@
 body { 
-padding: 40px;
-/*background-image: url("IMG_0712.JPG");*/
+padding: 20px;
+margin: 20px;
 }
 
 #map-canvas {
-        height: 400px;
-        margin: 20px;
-        padding: 20px
+        height: 500px;
+        padding: 10px
 }
 #panel {
         top: 5px;

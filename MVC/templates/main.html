@@ -6,67 +6,94 @@
         <title> Home Page </title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}"> 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
         <!-- This is for Google Maps Geocode.  Will move this to a js file in static folder -->
-            <script>
+        <script>
         var geocoder;
         var map;
+        var lat;
+        var lng;
+        $(document).ready(function() {
+        
+          initialize();
+
+          $("#find_snow").click(function() {
+            var address = $("#address").val();
+            geocoder.geocode( { 'address': address}, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                    });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+              }
+             //  Piera's code starts here
+              var lat = results[0].geometry.location.lat();
+              var lng = results[0].geometry.location.lng();
+              console.log(lat, lng);
+
+              $.post(
+                "/report",
+                {
+                  lat: lat,
+                  lng: lng
+                },
+                function (response) {
+                  // var marker = {};
+                  // console.log(response);
+                  //$("#snow_report").html(response);
+                  // var positions = [];
+                  for (var i in response)
+                  {
+                    console.log(response[i].lat,response[i].lng);
+                    var coordinates = new google.maps.LatLng(response[i].lat, response[i].lng);
+                    // positions.push(coordinates);
+                    console.log(coordinates);
+                    marker = new google.maps.Marker
+                      ({
+                    map: map,
+                    position: coordinates,
+                    animation: google.maps.Animation.DROP,
+                    title: "Click to view data",
+                    id: response[i].name
+                     });
+                  }
+                  // console.log("Positions: " + positions);
+                },
+                "json"
+              );
+              // Piera's code ends
+            });
+          });
+        });
+
         function initialize() {
           geocoder = new google.maps.Geocoder();
           var latlng = new google.maps.LatLng(37.8717, -122.2728);
           var mapOptions = {
             zoom: 5,
             center: latlng
+
           }
-          map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+          map = new google.maps.Map($('#map-canvas').get(0), mapOptions);
         }
-
-        function codeAddress() {
-          var address = document.getElementById('address').value;
-          geocoder.geocode( { 'address': address}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-              map.setCenter(results[0].geometry.location);
-              var marker = new google.maps.Marker({
-                  map: map,
-                  position: results[0].geometry.location
-              });
-            } else {
-              alert('Geocode was not successful for the following reason: ' + status);
-            }
-          });
-        }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-            </script>
+        
+        </script>
 
     </head>
 
     <body>
-        <h4>This is under construction:</h4>
+
+        <h4>Enter your current location</h4>
         <div id="panel">
-            <input id="address" size="75" type="textbox" value="Berkeley, CA">
-            <input type="button" value="Geocode this" onclick="codeAddress()">
+            <input id="address" size="100" type="textbox" value="San Francisco, CA">
+            <input type="button" value="Find Snow" id="find_snow">
         </div>
-            <div id="map-canvas"></div>
-
-        <br>   
-        <h4>This works:</h4>
-        <form class="form-horizontal", action = "{{ url_for('lookup') }}" method="post">
-            <br>
-            <h4>Latitude:  <input type="text" name="lat"><br><br>
-            Longitude:  <input type="text" name="long"><br><br></h4>
-            <button type="submit" value="submit" id="lookup" class="btn">Find me the closest SnoTel Stations!</button>
-        </form>
-        <br>
-
-        <h4>Here are some locations to try:<br><br>
-        <ul>
-            <li>San Francisco Ferry Building, SF: 37.795483, -122.393306</li>
-            <li>Hollywood Sign, Los Angeles: 34.134115, -118.321548</li>
-            <li>Eureka, CA:  40.783229, -124.146220</li>
-            <li>Pinedale, WY: 42.865499, -109.870700</li>
-            <li>Salida, CO: 38.532853, -106.003459</li>
-        </ul>
+        <div id="map-canvas"></div>
+        <div id="snow_report"></div>
 
     </body>
 

@@ -51,11 +51,11 @@
                                 return {
                                   path: google.maps.SymbolPath.CIRCLE,
                                   fillColor: 'blue',
-                                  fillOpacity: .7,
+                                  fillOpacity: .5,
                                   // scale: Math.pow(2.2, depth) / Math.PI,
                                   scale: depth*10/1.5,
                                   strokeColor: 'blue',
-                                  strokeWeight: .9
+                                  strokeWeight: .7
                                 };
                             }
                   for (var i in response['closest'])
@@ -108,15 +108,49 @@
           }
 
         function initialize() {
+         var styles = [
+                {
+              featureType: "all",
+              stylers: [
+                { saturation: -80 }
+              ]
+            },{
+              featureType: "road.arterial",
+              elementType: "geometry",
+              stylers: [
+                { hue: "#00ffee" },
+                { saturation: 70 }
+              ]
+            },{
+              featureType: "poi.business",
+              elementType: "labels",
+              stylers: [
+                { visibility: "off" }
+              ]
+            }
+              ];
+
+        var styledMap = new google.maps.StyledMapType(styles,
+             {name: "Styled Map"});
           geocoder = new google.maps.Geocoder();
           var latlng = new google.maps.LatLng(38.48323, -109.2896);
           var mapOptions = {
             zoom: 5,
             center: latlng,
-            mapTypeId: google.maps.MapTypeId.TERRAIN
+            mapTypeControlOptions: 
+             {
+            mapTypeId: [google.maps.MapTypeId.TERRAIN, 'map_style']
+             },
+            disableDefaultUI: true,
+            panControl: false,
+            zoomControl: true,
+            scaleControl: false,
+            mapTypeControl: true
 
           }
           map = new google.maps.Map($('#map-canvas').get(0), mapOptions);
+          map.mapTypes.set('map_style', styledMap);
+          map.setMapTypeId('map_style');
         }
         
         </script>
@@ -125,13 +159,26 @@
 
     <body>
 
-        <h4>Enter Location:</h4>
         <div id="panel">
-            <input id="address" size="100" type="textbox" value="Echo Lake, CA">
-            <input type="button" value="Snow Report" id="find_snow">
+          <form role="form" class="form-inline">
+            <form class ="form-group">
+            <label for="inputLocation" class="addressInput"><h4>Enter Location:   </h4></label>
+            <input id="address" size="50" type="textbox" class="form-control" value="Lake Aloha, CA">
+            <input type="button" class="btn btn-primary" value="Snow Report" id="find_snow">
+          </form>
         </div>
-        <div id="map-canvas"></div>
-        <div id="snow_report"></div>
+
+        <div class="row">
+            <div class="col-md-8">
+              <div id="map-canvas"></div>
+            </div>
+            <div class="col-md-4">
+              <div id="snow_report"></div>
+            </div>
+        </div>
+
+      <!--   <div id="map-canvas"></div>
+        <div id="snow_report"></div> -->
 
     </body>
 

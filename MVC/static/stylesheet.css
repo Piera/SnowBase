@@ -1,16 +1,27 @@
 body { 
-padding: 20px;
-margin: 20px;
+
+padding: 50px;
+margin: 50px;
+
+}
+
+#address {
+
+width: 30%;
+
 }
 
 #map-canvas {
-        height: 500px;
-        padding: 10px
+
+        height: 550px;
+        /*width: 900px;*/
+        padding: 30px;
 }
+
 #panel {
-        top: 5px;
+        top: 40px;
         /*z-index: 5;*/
         background-color: #fff;
-        padding: 10px;
+        padding: 40px;
 }
 

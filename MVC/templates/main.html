@@ -7,7 +7,9 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}"> 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
+        <script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true">
+        <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+</script>
         <!-- This is for Google Maps Geocode.  Will move this to a js file in static folder -->
         <script>
         var geocoder;
@@ -15,6 +17,10 @@
         var lat;
         var lng;
         var positions = [];
+        var coordinates_array = [];
+        var heatmap;
+        var bounds;
+        var gradient;
         $(document).ready(function() {
         
           initialize();
@@ -53,7 +59,7 @@
                                   fillColor: 'blue',
                                   fillOpacity: .5,
                                   // scale: Math.pow(2.2, depth) / Math.PI,
-                                  scale: depth*10/1.5,
+                                  scale: depth*10/10000,
                                   strokeColor: 'blue',
                                   strokeWeight: .7
                                 };
@@ -63,18 +69,32 @@
                     // $('#snow_report').html("this is deep: " + response[i].depth + "<br>");
                     console.log("Coordinates: " + response['closest'][i]['lat'],response['closest'][i]['lng']);
                     var coordinates = new google.maps.LatLng(response['closest'][i]['lat'],response['closest'][i]['lng']);
+                    var point_weight = response['closest'][i]['depth']*1.5;
+                    coordinates_array.push({location: coordinates, weight: point_weight});
+                    console.log("Heatmap array: " + coordinates_array);
                     var marker_depth = response['closest'][i]['depth'];
                     console.log("Marker_depth: " + marker_depth);
-                    // positions.push(coordinates);
                     marker = new google.maps.Marker
                       ({
                     map: map,
                     position: coordinates,
-                    icon: getCircle(marker_depth)
+                    icon: getCircle(marker_depth),
+                    animation: google.maps.Animation.DROP,
                      });
                     positions.push(marker);
                   }
+                  bounds = new google.maps.LatLngBounds();
+                    for(i=0;i<positions.length;i++) {
+                     bounds.extend(positions[i].getPosition());
+                    }
+                  map.fitBounds(bounds);
                   console.log("Positions array: " + positions);
+                  heatmap = new google.maps.visualization.HeatmapLayer({
+                  data: coordinates_array,
+                  radius: 20,
+                  gradient: gradient
+                  });
+                  heatmap.setMap(map);
 
                   $('#snow_report').html("<br><h4>Snow Report:</h4><ul><li><h5>The two stations closest to this location are the " + response['closest'][0]['name'] + " station that is " + response['closest'][0]['dist'] + " miles away, with " + response['closest'][0]['depth'] + " inches of snow, and the " + response['closest'][1]['name'] + " station that is " + response['closest'][1]['dist'] + " miles away, with " + response['closest'][1]['depth'] + " inches of snow.</li></ul></h5>")
 
@@ -130,9 +150,26 @@
             }
               ];
 
-        var styledMap = new google.maps.StyledMapType(styles,
-             {name: "Styled Map"});
+          gradient = [
+            'rgba(0, 255, 255, 0)',
+            'rgba(0, 255, 255, 1)',
+            'rgba(0, 191, 255, 1)',
+            'rgba(0, 127, 255, 1)',
+            'rgba(0, 63, 255, 1)',
+            'rgba(0, 0, 255, 1)',
+            'rgba(0, 0, 223, 1)',
+            'rgba(0, 0, 191, 1)',
+            'rgba(0, 0, 159, 1)',
+            'rgba(0, 0, 127, 1)',
+            'rgba(63, 0, 91, 1)',
+            'rgba(127, 0, 63, 1)',
+            'rgba(191, 0, 31, 1)',
+            'rgba(255, 0, 0, 1)'
+          ]
+
           geocoder = new google.maps.Geocoder();
+          var styledMap = new google.maps.StyledMapType(styles,
+             {name: "Styled Map"});
           var latlng = new google.maps.LatLng(38.48323, -109.2896);
           var mapOptions = {
             zoom: 5,
@@ -142,7 +179,7 @@
             mapTypeId: [google.maps.MapTypeId.TERRAIN, 'map_style']
              },
             disableDefaultUI: true,
-            panControl: false,
+            panControl: true,
             zoomControl: true,
             scaleControl: false,
             mapTypeControl: true
@@ -151,7 +188,9 @@
           map = new google.maps.Map($('#map-canvas').get(0), mapOptions);
           map.mapTypes.set('map_style', styledMap);
           map.setMapTypeId('map_style');
+
         }
+
         
         </script>
 

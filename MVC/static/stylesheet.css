@@ -1,27 +1,27 @@
 body { 
-
-padding: 50px;
-margin: 50px;
-
+padding: 20px;
+margin: 20px;
+font-family: 'Roboto' !important;
 }
 
 #address {
-
 width: 30%;
+}
 
+
+#snow_report {
 }
 
 #map-canvas {
-
         height: 550px;
         /*width: 900px;*/
-        padding: 30px;
+        padding: 20px;
 }
 
 #panel {
-        top: 40px;
-        /*z-index: 5;*/
+        top: 20px;
+        z-index: 5;
         background-color: #fff;
-        padding: 40px;
+        padding: 20px;
 }
 

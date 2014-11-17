@@ -27,6 +27,9 @@ def load_snow_data(session):
 					units = 'in'
 					date = datetime.strptime(snow_data['data'][0]['Date'], '%Y-%m-%d')
 					depth = int(snow_data['data'][0]['Snow Depth (in)'])
+					depth_change = None
+					water_equiv = None
+					water_equiv_change = None
 					if snow_data['data'][0]['Change In Snow Depth (in)'] != None:
 						depth_change = int(snow_data['data'][0]['Change In Snow Depth (in)'])
 					if snow_data['data'][0]['Snow Water Equivalent (in)'] != None:

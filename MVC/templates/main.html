@@ -27,6 +27,10 @@
 
           $("#find_snow").click(function() {
             clearAllMap(map);
+            coordinates_array = [];
+            if (heatmap) {
+            heatmap.setMap(null);
+             }
             var address = $("#address").val();
             geocoder.geocode( { 'address': address}, function(results, status) {
               if (status == google.maps.GeocoderStatus.OK) {
@@ -34,7 +38,8 @@
                 map.setZoom(8);
                 var marker = new google.maps.Marker({
                     map: map,
-                    position: results[0].geometry.location
+                    position: results[0].geometry.location,
+                    title: address
                     });
                 positions.push(marker);
             } else {
@@ -64,6 +69,9 @@
                                   strokeWeight: .7
                                 };
                             }
+                  var infowindow = null;
+                  var image = '{{ url_for('static', filename='marker_blue.png') }}';
+                  infowindow = new google.maps.InfoWindow();
                   for (var i in response['closest'])
                   {
                     // $('#snow_report').html("this is deep: " + response[i].depth + "<br>");
@@ -78,11 +86,28 @@
                       ({
                     map: map,
                     position: coordinates,
-                    icon: getCircle(marker_depth),
+                    icon: image,
+                    // icon: getCircle(marker_depth),
                     animation: google.maps.Animation.DROP,
+                    title: (response['closest'][i]['name'] + ", " + "Snow depth: " + response['closest'][i]['depth'] + " in."),
+                    info: ("<strong>Station:</strong> " + response['closest'][i]['name'] + "<br><strong>Distance:</strong> " + response['closest'][i]['dist'] + " mi." + "<br><strong>Snow depth:</strong> " + response['closest'][i]['depth'] + " in." + "<br><strong>Depth change:</strong> " + response['closest'][i]['depth_change'] + " in.")
                      });
+
+                    google.maps.event.addListener(marker, 'click', function() {
+                          //marker.info.open(map, this);
+                          infowindow.setContent(this.info);
+                          infowindow.open(map, this);
+                      });
+
+
+
                     positions.push(marker);
+
+
+
                   }
+
+
                   bounds = new google.maps.LatLngBounds();
                     for(i=0;i<positions.length;i++) {
                      bounds.extend(positions[i].getPosition());
@@ -91,7 +116,7 @@
                   console.log("Positions array: " + positions);
                   heatmap = new google.maps.visualization.HeatmapLayer({
                   data: coordinates_array,
-                  radius: 20,
+                  radius: 25,
                   gradient: gradient
                   });
                   heatmap.setMap(map);

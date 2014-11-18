@@ -25,6 +25,24 @@
         
           initialize();
 
+          // -------
+          $("#test_alert").click(function() {
+            $.post(
+              "/alert",
+              {
+                alert: 1,
+                station: 5
+              },
+              function (response) {
+                console.log(response);
+                console.log("Got it");
+               },
+               "json"
+            );
+            });
+
+        // ----------
+
           $("#find_snow").click(function() {
             clearAllMap(map);
             coordinates_array = [];
@@ -90,7 +108,7 @@
                     // icon: getCircle(marker_depth),
                     animation: google.maps.Animation.DROP,
                     title: (response['closest'][i]['name'] + ", " + "Snow depth: " + response['closest'][i]['depth'] + " in."),
-                    info: ("<strong>Station:</strong> " + response['closest'][i]['name'] + "<br><strong>Distance:</strong> " + response['closest'][i]['dist'] + " mi." + "<br><strong>Snow depth:</strong> " + response['closest'][i]['depth'] + " in." + "<br><strong>Depth change:</strong> " + response['closest'][i]['depth_change'] + " in.")
+                    info: ("<strong>Station:</strong> " + response['closest'][i]['name'] +  "<br><strong>Elevation:</strong> " + response['closest'][i]['ele'] + "<br><strong>Distance:</strong> " + response['closest'][i]['dist'] + " mi." + "<br><strong>Snow depth:</strong> " + response['closest'][i]['depth'] + " in." + "<br><strong>Depth change:</strong> " + response['closest'][i]['depth_change'] + " in.")
                      });
 
                     google.maps.event.addListener(marker, 'click', function() {
@@ -124,7 +142,7 @@
                   $('#snow_report').html("<br><h4>Snow Report:</h4><ul><li><h5>The two stations closest to this location are the " + response['closest'][0]['name'] + " station that is " + response['closest'][0]['dist'] + " miles away, with " + response['closest'][0]['depth'] + " inches of snow, and the " + response['closest'][1]['name'] + " station that is " + response['closest'][1]['dist'] + " miles away, with " + response['closest'][1]['depth'] + " inches of snow.</li></ul></h5>")
 
                   $('#snow_report').append(
-                    "<ul><li><h5>Of these 10 closest stations, the stations reading most snow pack are the " + response['deepest'][0]['name'] + " station that is " + response['deepest'][0]['dist'] + " miles away, with " + response['deepest'][0]['depth'] + " inches of snow, and the " + response['deepest'][1]['name'] + " station that is " + response['deepest'][1]['dist'] + " miles away, with " + response['deepest'][1]['depth'] + " inches of snow.</h5></li></ul>")
+                    "<ul><li><h5>Of these closest stations, the stations reading most snow pack are the " + response['deepest'][0]['name'] + " station that is " + response['deepest'][0]['dist'] + " miles away, with " + response['deepest'][0]['depth'] + " inches of snow, and the " + response['deepest'][1]['name'] + " station that is " + response['deepest'][1]['dist'] + " miles away, with " + response['deepest'][1]['depth'] + " inches of snow.</h5></li></ul>")
 
                   $('#snow_report').append(
                     "<ul><li><h5>The stations with the most new snow are the " + response['most new'][0]['name'] + " station that is " + response['most new'][0]['dist'] + " miles away, with " + response['most new'][0]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow, and the " + response['most new'][1]['name'] + " station that is " + response['most new'][1]['dist'] + " miles away, with " + response['most new'][1]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow.</h5></li></ul><br>")
@@ -214,9 +232,11 @@
           map.mapTypes.set('map_style', styledMap);
           map.setMapTypeId('map_style');
 
-        }
+          }
 
         
+
+ 
         </script>
 
     </head>
@@ -237,7 +257,13 @@
               <div id="map-canvas"></div>
             </div>
             <div class="col-md-4">
-              <div id="snow_report"></div>
+                <div id="snow_report"></div>
+                <div id="alert">
+                  <form role="form" class="form-inline">
+                  <form class ="form-group"><br>
+                  <input type="button" class="btn btn-primary" value="Test Alert" id="test_alert">
+                  </form>
+                </div>
             </div>
         </div>
 

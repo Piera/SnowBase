@@ -1,13 +1,19 @@
+import os
 import json
 import csv
 import urllib2
 import model
 import operator
+from twilio.rest import TwilioRestClient
 from haversine import distance
 from jinja2 import Template
 from sqlalchemy import desc
 from flask import Flask, render_template, request, make_response, session
 from model import session as dbsession
+
+TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
 
 app = Flask(__name__)
 
@@ -38,7 +44,7 @@ def lookup():
 			if u.depth != None and u.depth > 0:
 				# print s.id, s.given_id, s.name, s.latitude, s.longitude, u.sta_given_id,\
 				#  u.depth, u.depth_change, u.date
-				dist_list.append({'dist':mi, 'id':counter.given_id, 'lat': counter.latitude, 'lng': counter.longitude, 'name':counter.name, 'depth':u.depth,\
+				dist_list.append({'dist':mi, 'id':counter.given_id, 'ele':counter.elevation, 'lat': counter.latitude, 'lng': counter.longitude, 'name':counter.name, 'depth':u.depth,\
 				 'depth_change':u.depth_change})
 			else:
 				continue
@@ -47,11 +53,11 @@ def lookup():
 			destination = counter.latitude, counter.longitude
 			kms = int(distance(origin, destination))
 			mi = int(0.621371*kms)
-	closest_sta = sorted(dist_list, key=lambda k: k['dist'])[0:10]
+	closest_sta = sorted(dist_list, key=lambda k: k['dist'])[0:15]
 	print "Closest stations: ", closest_sta
-	deepest_snow = sorted(closest_sta, key=lambda k: k['depth'], reverse=True)[0:10]
+	deepest_snow = sorted(closest_sta, key=lambda k: k['depth'], reverse=True)[0:4]
 	print "Deepest snow: ", deepest_snow
-	most_new_snow = sorted(closest_sta, key=lambda k: k['depth_change'], reverse=True)[0:10]
+	most_new_snow = sorted(closest_sta, key=lambda k: k['depth_change'], reverse=True)[0:4]
 	print "Most new snow: ", most_new_snow
 
 	# Return the 10 closest stations, their distances away in miles (converted from kms)
@@ -69,6 +75,65 @@ def lookup():
 	# Make this better - look at 5 stations (or radius?), if no snow, look at next 5 closest stations (or wider radius).
 	#  or take radius input.
 	# Return best snow quality (based on water_equiv)
+
+@app.route("/alert", methods = ['GET','POST'])
+def alert():
+# Getting Twilio working, and sending test text messages
+	status = request.values.get("alert", 0, type=int)
+	station = request.values.get("station", 0, type=int)
+	if status == 1:
+		client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+		number_to_text = "+1AREACODEPHONENUMBERHERE"
+		station = dbsession.query(model.Station).first()
+		print station.name
+		depth = station.snow_data[-1].depth
+		print depth
+		depth_change = station.snow_data[-1].depth_change
+		print depth_change
+		hello = "Station: %s, Snow depth: %s in., Depth change: %s in!" % (station.name, depth, depth_change)
+		print hello
+		message = client.messages.create(from_=TWILIO_NUMBER,
+										to=number_to_text,
+										body=hello)
+		response = json.dumps(hello, message.sid)
+		print message.sid
+		return response
+# End of Twilio test.
+
+# ----------- 
+
+# Alert functionality goes something like this:
+# If user clicks set alert button, and user phone number is authenticated
+# Add station, phone number to alert db and set alert status to false
+
+# Every day cron job -- once running, put this into new file:
+# Query station_ids found in the alerts table
+	# alert_station = dbsession.query(model.Alerts).all()
+	# for counter in alert_station:
+# if depth_change > 0
+		# d = dbsession.query(model.Stations).filter_by(alert_station.station_id)
+		# u = d.snow_data[-1]
+# if depth_change > 0
+# and alert status = False
+		# if u.depth_change > 0 and alert_station.status = False:
+# Send alert to phone number for user_ids for that station_id
+			# message_string = "Snow alert! Station: %s, Snow depth: %s in., Depth change: %s in!" % (d.name, u.depth, u.depth_change)
+			# message = client.message.create(from = TWILIO_NUMBER,
+			# 								to=alert_station.phone_number
+			# 								body=message_string)
+# Change alert status to True
+			# alert_station.status =True
+# Update datetime in last_alert
+			# alert_station.date = datetime(now)
+			# session.commit()
+# if user replies to alert text
+# Set alert status to False
+# demo code - something like this:
+	# from_number = request.values.get('From')
+	# alert_station.phone_number.get(status) = False
+	# session.commit()
+
+
 
 if __name__ == "__main__":
     app.run(debug = True)

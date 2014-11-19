@@ -82,7 +82,8 @@
                   heatmap = new google.maps.visualization.HeatmapLayer({
                   data: coordinates_array,
                   radius: 5,
-                  gradient: gradient
+                  gradient: gradient,
+                  dissipating: true
                   });
                   heatmap.setMap(map);
 
@@ -190,13 +191,23 @@
                   });
                   heatmap.setMap(map);
 
-                  $('#snow_report').html("<br><h4>Snow Report:</h4><ul><li><h5>The two stations closest to this location are the " + response['closest'][0]['name'] + " station that is " + response['closest'][0]['dist'] + " miles away, with " + response['closest'][0]['depth'] + " inches of snow, and the " + response['closest'][1]['name'] + " station that is " + response['closest'][1]['dist'] + " miles away, with " + response['closest'][1]['depth'] + " inches of snow.</li></ul></h5>")
+                  // $('#snow_report').html("<br><h4>Snow Report:</h4><ul><li><h5>The two stations closest to this location are the " + response['closest'][0]['name'] + " station that is " + response['closest'][0]['dist'] + " miles away, with " + response['closest'][0]['depth'] + " inches of snow, and the " + response['closest'][1]['name'] + " station that is " + response['closest'][1]['dist'] + " miles away, with " + response['closest'][1]['depth'] + " inches of snow.</li></ul></h5>")
 
-                  $('#snow_report').append(
-                    "<ul><li><h5>Of these closest stations, the stations reading most snow pack are the " + response['deepest'][0]['name'] + " station that is " + response['deepest'][0]['dist'] + " miles away, with " + response['deepest'][0]['depth'] + " inches of snow, and the " + response['deepest'][1]['name'] + " station that is " + response['deepest'][1]['dist'] + " miles away, with " + response['deepest'][1]['depth'] + " inches of snow.</h5></li></ul>")
+                  // $('#snow_report').append(
+                  //   "<ul><li><h5>Of these closest stations, the stations reading most snow pack are the " + response['deepest'][0]['name'] + " station that is " + response['deepest'][0]['dist'] + " miles away, with " + response['deepest'][0]['depth'] + " inches of snow, and the " + response['deepest'][1]['name'] + " station that is " + response['deepest'][1]['dist'] + " miles away, with " + response['deepest'][1]['depth'] + " inches of snow.</h5></li></ul>")
 
-                  $('#snow_report').append(
-                    "<ul><li><h5>The stations with the most new snow are the " + response['most new'][0]['name'] + " station that is " + response['most new'][0]['dist'] + " miles away, with " + response['most new'][0]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow, and the " + response['most new'][1]['name'] + " station that is " + response['most new'][1]['dist'] + " miles away, with " + response['most new'][1]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow.</h5></li></ul><br>")
+                  // $('#snow_report').append(
+                  //   "<ul><li><h5>The stations with the most new snow are the " + response['most new'][0]['name'] + " station that is " + response['most new'][0]['dist'] + " miles away, with " + response['most new'][0]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow, and the " + response['most new'][1]['name'] + " station that is " + response['most new'][1]['dist'] + " miles away, with " + response['most new'][1]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow.</h5></li></ul><br>")
+
+                  $('#stations_data').html('')
+
+                  var table_headers = "<tr class = 'snow_data' id='snow_data_table'><td class='column_header' id='stations'><center><strong>Station</center></strong></td><td class='column_header' id='distances'><center><strong>Distance</center></strong></td><td class='column_header' id='elevations'><center><strong>Elevation</center></strong></td><td class='column_header' id='depths'><center><strong>Snow Depth</center></strong></td><td class='column_header' id='depth changes'><center><strong>Change in Snow Depth</center></strong></td></tr>"
+
+                  $('#stations_data').append(table_headers)
+
+                  for (var i = 0; i < response['closest'].length; i++) {
+                  $('#stations_data').append("<tr><td>" + response['closest'][i]['name'] + "</td><td><center>" + response['closest'][i]['dist'] + " mi. </center></td><td><center>" + response['closest'][i]['ele'] + " ft. </center></td><td><center>" + response['closest'][i]['depth'] + " in. </center></td><td><center>" + response['closest'][i]['depth_change'] + " in. </center></td></tr>")
+                  }
 
                 },
                 "json"
@@ -284,9 +295,6 @@
           map.setMapTypeId('map_style');
 
           }
-
-        
-
  
         </script>
 
@@ -300,13 +308,15 @@
             <label for="inputLocation" class="addressInput"><h4>Enter Location:   </h4></label>
             <input id="address" size="50" type="textbox" class="form-control" value="Lake Aloha, CA">
             <input type="button" class="btn btn-primary" value="Snow Report" id="find_snow">
+            <input type="button" class="btn btn-primary" value="See All" id="see_all">
+            <input type="button" class="btn btn-primary" value="Test Alert" id="test_alert">
           </form>
         </div>
 
-        <div class="row">
-            <div class="col-md-8">
+        <!-- <div class="row"> -->
+            <!-- <div class="col-md-8"> -->
               <div id="map-canvas"></div>
-            </div>
+        <!--     </div>
             <div class="col-md-4">
                 <div id="snow_report"></div>
                 <div id="alert">
@@ -322,7 +332,12 @@
                   </form>
                 </div>
             </div>
-        </div>
+        </div> -->
+
+        <table class="table table-condensed table-striped table-bordered" id="stations_data">
+        </table>
+
+
 
       <!--   <div id="map-canvas"></div>
         <div id="snow_report"></div> -->

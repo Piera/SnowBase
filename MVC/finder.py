@@ -76,6 +76,26 @@ def lookup():
 	#  or take radius input.
 	# Return best snow quality (based on water_equiv)
 
+@app.route("/see_all", methods = ['GET','POST'])
+def see_all():
+	button = request.values.get("button", 0, type=int)
+	if button == 1:
+		all_depth = []
+		s = dbsession.query(model.Station).all()
+		for counter in s:
+			try: 
+				u = counter.snow_data[-1]
+				# use if not != None... or [] -- try/except can hide other errors!
+				if u.depth != None and u.depth > 0:
+					all_depth.append({'lat': counter.latitude, 'lng': counter.longitude, 'name':counter.name, 'depth':u.depth})
+				else:
+					continue
+			except IndexError:
+				print "Index Error exception triggered"
+		print all_depth
+		response = json.dumps(all_depth)
+		return response
+
 @app.route("/alert", methods = ['GET','POST'])
 def alert():
 # Getting Twilio working, and sending test text messages
@@ -83,7 +103,7 @@ def alert():
 	station = request.values.get("station", 0, type=int)
 	if status == 1:
 		client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-		number_to_text = "+1AREACODEPHONENUMBERHERE"
+		number_to_text = "--ENTER PHONE NUMBER HERE--"
 		station = dbsession.query(model.Station).first()
 		print station.name
 		depth = station.snow_data[-1].depth

@@ -43,6 +43,56 @@
 
         // ----------
 
+        // ----------
+
+          $("#see_all").click(function() {
+            clearAllMap(map);
+            coordinates_array = [];
+            if (heatmap) {
+            heatmap.setMap(null);
+             }
+
+            $.post(
+              "/see_all",
+              {
+                button: 1
+              },
+              function (response) {
+                console.log(response);
+                console.log("Got it");
+                var all_map = [];
+                for (var i in response)
+                  {
+                    var coordinates = new google.maps.LatLng(response[i]['lat'],response[i]['lng']);
+                    var point_weight = response[i]['depth']*1.5;
+                    all_map.push(coordinates);
+                    coordinates_array.push({location: coordinates, weight: point_weight});
+                    console.log("Heatmap array: " + coordinates_array);
+                    // var marker_depth = response[i]['depth'];
+                    // console.log("Marker_depth: " + marker_depth);
+                  }
+
+                  bounds = new google.maps.LatLngBounds();
+                    for(i=0;i<coordinates_array.length;i++) {
+                     // bounds.extend(all_map.getPosition());
+                     bounds.extend(all_map[i]);
+                    }
+                  map.fitBounds(bounds);
+                  console.log("Positions array: " + positions);
+                  heatmap = new google.maps.visualization.HeatmapLayer({
+                  data: coordinates_array,
+                  radius: 5,
+                  gradient: gradient
+                  });
+                  heatmap.setMap(map);
+
+               },
+               "json"
+            );
+            });
+
+        // ----------
+
           $("#find_snow").click(function() {
             clearAllMap(map);
             coordinates_array = [];
@@ -135,7 +185,8 @@
                   heatmap = new google.maps.visualization.HeatmapLayer({
                   data: coordinates_array,
                   radius: 25,
-                  gradient: gradient
+                  gradient: gradient,
+                  dissipating: true
                   });
                   heatmap.setMap(map);
 
@@ -262,6 +313,12 @@
                   <form role="form" class="form-inline">
                   <form class ="form-group"><br>
                   <input type="button" class="btn btn-primary" value="Test Alert" id="test_alert">
+                  </form>
+                </div>
+                <div id="see_all">
+                  <form role="form" class="form-inline">
+                  <form class ="form-group"><br>
+                  <input type="button" class="btn btn-primary" value="See All" id="see_all">
                   </form>
                 </div>
             </div>

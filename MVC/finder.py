@@ -96,6 +96,21 @@ def see_all():
 		response = json.dumps(all_depth)
 		return response
 
+@app.route("/charts", methods = ['GET','POST'])
+def charts():
+	station_name = request.args.get("station")
+	result = dbsession.query(model.Station).filter_by(name=station_name).one()
+	u = []
+	u = result.snow_data[-7:]
+	print 
+	chart_data = []
+	for item in u:
+		chart_data.append({"date":item.date.strftime("%m/%d/%y"),"depth":item.depth})
+	print chart_data
+	response = json.dumps(chart_data)
+	return response
+	
+
 @app.route("/alert", methods = ['GET','POST'])
 def alert():
 # Getting Twilio working, and sending test text messages
@@ -103,7 +118,7 @@ def alert():
 	station = request.values.get("station", 0, type=int)
 	if status == 1:
 		client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-		number_to_text = "--ENTER PHONE NUMBER HERE--"
+		number_to_text = "+1AAAXXXYYYY"
 		station = dbsession.query(model.Station).first()
 		print station.name
 		depth = station.snow_data[-1].depth

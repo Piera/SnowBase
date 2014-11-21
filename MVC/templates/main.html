@@ -7,9 +7,10 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}"> 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
-        <script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true">
+        <script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true"></script>
         <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-</script>
+        <script type="text/javascript" src="{{ url_for('static', filename='charts.js') }}"></script>
+
         <!-- This is for Google Maps Geocode.  Will move this to a js file in static folder -->
         <script>
         var geocoder;
@@ -25,7 +26,7 @@
         
           initialize();
 
-          // -------
+          // -------  Text alert in progress
           $("#test_alert").click(function() {
             $.post(
               "/alert",
@@ -39,11 +40,34 @@
                },
                "json"
             );
-            });
+          });
 
-        // ----------
+          // ---------- End Text alert
 
-        // ----------
+          // ---------- Chart rendering in progress
+
+          $("#test_chart").click(function() {
+            $.get(
+              "/charts",
+              {
+                station: "SQUAW VALLEY G.C."
+              },
+              function (response) 
+              {
+                console.log(response);
+                console.log("Got it");
+                $.getScript("static/charts.js", function(){
+                alert("Script loaded and executed.");
+                barchart(response);
+                });
+              },
+              "json"
+            );
+          });
+            
+          // ---------- End charts
+
+          // ---------- See all points on heatmap
 
           $("#see_all").click(function() {
             clearAllMap(map);
@@ -92,7 +116,15 @@
             );
             });
 
-        // ----------
+          // ---------- End see all points on heatmap
+
+          // ---------- Location based snow report
+
+          $('#find_snow').keydown(function(event){    
+              if(event.keyCode==13){
+                 $('#find_snow').trigger('click');
+              }
+          });
 
           $("#find_snow").click(function() {
             clearAllMap(map);
@@ -100,7 +132,7 @@
             if (heatmap) {
             heatmap.setMap(null);
              }
-            var address = $("#address").val();
+            var address = $("#address").val()
             geocoder.geocode( { 'address': address}, function(results, status) {
               if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
@@ -114,7 +146,6 @@
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
               }
-             //  Piera's code starts here
               var lat = results[0].geometry.location.lat();
               var lng = results[0].geometry.location.lng();
               console.log(lat, lng);
@@ -168,11 +199,7 @@
                           infowindow.open(map, this);
                       });
 
-
-
                     positions.push(marker);
-
-
 
                   }
 
@@ -191,6 +218,8 @@
                   });
                   heatmap.setMap(map);
 
+                  // --------- Narrative snow reports
+
                   // $('#snow_report').html("<br><h4>Snow Report:</h4><ul><li><h5>The two stations closest to this location are the " + response['closest'][0]['name'] + " station that is " + response['closest'][0]['dist'] + " miles away, with " + response['closest'][0]['depth'] + " inches of snow, and the " + response['closest'][1]['name'] + " station that is " + response['closest'][1]['dist'] + " miles away, with " + response['closest'][1]['depth'] + " inches of snow.</li></ul></h5>")
 
                   // $('#snow_report').append(
@@ -198,6 +227,10 @@
 
                   // $('#snow_report').append(
                   //   "<ul><li><h5>The stations with the most new snow are the " + response['most new'][0]['name'] + " station that is " + response['most new'][0]['dist'] + " miles away, with " + response['most new'][0]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow, and the " + response['most new'][1]['name'] + " station that is " + response['most new'][1]['dist'] + " miles away, with " + response['most new'][1]['depth'] + " inches of total snow, including " + response['most new'][0]['depth_change'] + " inches of new snow.</h5></li></ul><br>")
+
+                  // --------- End, narrative snow reports
+
+                  // --------- Table report
 
                   $('#stations_data').html('')
 
@@ -207,15 +240,21 @@
 
                   for (var i = 0; i < response['closest'].length; i++) {
                   $('#stations_data').append("<tr><td>" + response['closest'][i]['name'] + "</td><td><center>" + response['closest'][i]['dist'] + " mi. </center></td><td><center>" + response['closest'][i]['ele'] + " ft. </center></td><td><center>" + response['closest'][i]['depth'] + " in. </center></td><td><center>" + response['closest'][i]['depth_change'] + " in. </center></td></tr>")
+
+                  // --------- End, table report
+
                   }
 
                 },
                 "json"
               );
-              // Piera's code ends
             });
           });
         });
+
+        // ---------- End location based snow report
+
+        // ---------- Map clearing
 
         function clearAllMap(map) {
           if (positions) 
@@ -231,6 +270,10 @@
               console.log("hi Piera");
               }
           }
+
+        // ---------- End map clearing
+
+        // ---------- Map initialization & settings
 
         function initialize() {
          var styles = [
@@ -295,6 +338,8 @@
           map.setMapTypeId('map_style');
 
           }
+
+          // ---------- End map initialization & settings
  
         </script>
 
@@ -310,13 +355,14 @@
             <input type="button" class="btn btn-primary" value="Snow Report" id="find_snow">
             <input type="button" class="btn btn-primary" value="See All" id="see_all">
             <input type="button" class="btn btn-primary" value="Test Alert" id="test_alert">
+            <input type="button" class="btn btn-primary" value="Test Chart" id="test_chart">
           </form>
         </div>
 
         <!-- <div class="row"> -->
             <!-- <div class="col-md-8"> -->
-              <div id="map-canvas"></div>
-        <!--     </div>
+        <div id="map-canvas"></div>
+        <!-- </div>
             <div class="col-md-4">
                 <div id="snow_report"></div>
                 <div id="alert">
@@ -337,9 +383,11 @@
         <table class="table table-condensed table-striped table-bordered" id="stations_data">
         </table>
 
+        <div id="barchart">
+        </div>
 
-
-      <!--   <div id="map-canvas"></div>
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <!-- <div id="map-canvas"></div>
         <div id="snow_report"></div> -->
 
     </body>

@@ -53,12 +53,12 @@ def lookup():
 			destination = counter.latitude, counter.longitude
 			kms = int(distance(origin, destination))
 			mi = int(0.621371*kms)
-	closest_sta = sorted(dist_list, key=lambda k: k['dist'])[0:15]
-	print "Closest stations: ", closest_sta
-	deepest_snow = sorted(closest_sta, key=lambda k: k['depth'], reverse=True)[0:4]
-	print "Deepest snow: ", deepest_snow
-	most_new_snow = sorted(closest_sta, key=lambda k: k['depth_change'], reverse=True)[0:4]
-	print "Most new snow: ", most_new_snow
+	closest_sta = sorted(dist_list, key=lambda k: k['dist'])[0:10]
+	# print "Closest stations: ", closest_sta
+	deepest_snow = sorted(closest_sta, key=lambda k: k['depth'], reverse=True)[0:2]
+	# print "Deepest snow: ", deepest_snow
+	most_new_snow = sorted(closest_sta, key=lambda k: k['depth_change'], reverse=True)[0:2]
+	# print "Most new snow: ", most_new_snow
 
 	# Return the 10 closest stations, their distances away in miles (converted from kms)
 	#  and basic telemetry data for that station
@@ -99,6 +99,7 @@ def see_all():
 @app.route("/charts", methods = ['GET','POST'])
 def charts():
 	station_name = request.args.get("station")
+	print station_name
 	result = dbsession.query(model.Station).filter_by(name=station_name).one()
 	u = []
 	u = result.snow_data[-7:]
@@ -107,8 +108,8 @@ def charts():
 	for item in u:
 		chart_data.append({"date":item.date.strftime("%m/%d/%y"),"depth":item.depth})
 	print chart_data
-	response = json.dumps(chart_data)
-	return response
+	chart_data = json.dumps(chart_data)
+	return chart_data
 	
 
 @app.route("/alert", methods = ['GET','POST'])
@@ -118,7 +119,7 @@ def alert():
 	station = request.values.get("station", 0, type=int)
 	if status == 1:
 		client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-		number_to_text = "+1AAAXXXYYYY"
+		number_to_text = "+1510phone#"
 		station = dbsession.query(model.Station).first()
 		print station.name
 		depth = station.snow_data[-1].depth

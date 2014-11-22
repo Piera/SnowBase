@@ -44,28 +44,28 @@
 
           // ---------- End Text alert
 
-          // ---------- Chart rendering in progress
+          // // ---------- Chart rendering
 
-          $("#test_chart").click(function() {
-            $.get(
-              "/charts",
-              {
-                station: "SQUAW VALLEY G.C."
-              },
-              function (response) 
-              {
-                console.log(response);
-                console.log("Got it");
-                $.getScript("static/charts.js", function(){
-                alert("Script loaded and executed.");
-                barchart(response);
-                });
-              },
-              "json"
-            );
-          });
+          // $("#test_chart").click(function() {
+          //   $.get(
+          //     "/charts",
+          //     {
+          //       station: "SQUAW VALLEY G.C."
+          //     },
+          //     function (response) 
+          //     {
+          //       console.log(response);
+          //       console.log("Got it");
+          //       $.getScript("static/charts.js", function(){
+          //       alert("Script loaded and executed.");
+          //       barchart(response);
+          //       });
+          //     },
+          //     "json"
+          //   );
+          // });
             
-          // ---------- End charts
+          // // ---------- End charts
 
           // ---------- See all points on heatmap
 
@@ -102,7 +102,7 @@
                      bounds.extend(all_map[i]);
                     }
                   map.fitBounds(bounds);
-                  console.log("Positions array: " + positions);
+                  // console.log("Positions array: " + positions);
                   heatmap = new google.maps.visualization.HeatmapLayer({
                   data: coordinates_array,
                   radius: 5,
@@ -120,11 +120,15 @@
 
           // ---------- Location based snow report
 
-          $('#find_snow').keydown(function(event){    
-              if(event.keyCode==13){
-                 $('#find_snow').trigger('click');
-              }
-          });
+          // ---------- Accept return as a submission event
+
+          // $('#find_snow').keydown(function(event){    
+          //     if(event.keyCode==13){
+          //        $('#find_snow').trigger('click');
+          //     }
+          // });
+
+          // ---------- End, accept return as a submission event         
 
           $("#find_snow").click(function() {
             clearAllMap(map);
@@ -148,7 +152,7 @@
               }
               var lat = results[0].geometry.location.lat();
               var lng = results[0].geometry.location.lng();
-              console.log(lat, lng);
+              // console.log(lat, lng);
 
               $.post(
                 "/report",
@@ -157,7 +161,7 @@
                   lng: lng
                 },
                 function (response) {
-                  console.log(response['closest'][2]['lat']);
+                  // console.log(response['closest'][2]['lat']);
                   function getCircle(depth) {
                                 return {
                                   path: google.maps.SymbolPath.CIRCLE,
@@ -175,13 +179,13 @@
                   for (var i in response['closest'])
                   {
                     // $('#snow_report').html("this is deep: " + response[i].depth + "<br>");
-                    console.log("Coordinates: " + response['closest'][i]['lat'],response['closest'][i]['lng']);
+                    // console.log("Coordinates: " + response['closest'][i]['lat'],response['closest'][i]['lng']);
                     var coordinates = new google.maps.LatLng(response['closest'][i]['lat'],response['closest'][i]['lng']);
                     var point_weight = response['closest'][i]['depth']*1.5;
                     coordinates_array.push({location: coordinates, weight: point_weight});
-                    console.log("Heatmap array: " + coordinates_array);
+                    // console.log("Heatmap array: " + coordinates_array);
                     var marker_depth = response['closest'][i]['depth'];
-                    console.log("Marker_depth: " + marker_depth);
+                    // console.log("Marker_depth: " + marker_depth);
                     marker = new google.maps.Marker
                       ({
                     map: map,
@@ -209,7 +213,7 @@
                      bounds.extend(positions[i].getPosition());
                     }
                   map.fitBounds(bounds);
-                  console.log("Positions array: " + positions);
+                  // console.log("Positions array: " + positions);
                   heatmap = new google.maps.visualization.HeatmapLayer({
                   data: coordinates_array,
                   radius: 25,
@@ -240,6 +244,35 @@
 
                   for (var i = 0; i < response['closest'].length; i++) {
                   $('#stations_data').append("<tr><td>" + response['closest'][i]['name'] + "</td><td><center>" + response['closest'][i]['dist'] + " mi. </center></td><td><center>" + response['closest'][i]['ele'] + " ft. </center></td><td><center>" + response['closest'][i]['depth'] + " in. </center></td><td><center>" + response['closest'][i]['depth_change'] + " in. </center></td></tr>")
+
+                  // ---------- Chart rendering 
+
+                  $('#stations_data').on('click', 'tr', function(event){
+                    event.stopImmediatePropagation();
+                    var table_data = $('td:first', this).text();
+                    console.log('You clicked on this table data: ' + table_data);
+                    getChart(table_data);
+                    });
+
+                    function getChart(table_data) {
+                      $.get(
+                        '/charts',
+                        {
+                          station: table_data
+                        },
+                        function (response) 
+                        {
+                          console.log('This is the chart data: '+ response);
+                          $.getScript("static/charts.js", function(){
+                          alert("Script loaded and executed.");
+                          barchart(response);
+                          });
+                        },
+                        "json"
+                      );
+                    }
+            
+                  // ---------- End charts
 
                   // --------- End, table report
 
@@ -330,7 +363,8 @@
             panControl: true,
             zoomControl: true,
             scaleControl: false,
-            mapTypeControl: true
+            mapTypeControl: true,
+            scrollwheel: false
 
           }
           map = new google.maps.Map($('#map-canvas').get(0), mapOptions);
@@ -354,8 +388,8 @@
             <input id="address" size="50" type="textbox" class="form-control" value="Lake Aloha, CA">
             <input type="button" class="btn btn-primary" value="Snow Report" id="find_snow">
             <input type="button" class="btn btn-primary" value="See All" id="see_all">
-            <input type="button" class="btn btn-primary" value="Test Alert" id="test_alert">
-            <input type="button" class="btn btn-primary" value="Test Chart" id="test_chart">
+            <input type="button" class="btn btn-info" value="Test Alert" id="test_alert">
+            <input type="button"  class="btn btn-info" value="Test Chart" id="test_chart">
           </form>
         </div>
 
@@ -380,7 +414,7 @@
             </div>
         </div> -->
 
-        <table class="table table-condensed table-striped table-bordered" id="stations_data">
+        <table class="table table-hover" id="stations_data">
         </table>
 
         <div id="barchart">

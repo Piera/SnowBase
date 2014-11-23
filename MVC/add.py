@@ -25,7 +25,9 @@ def load_snow_data(session):
 					station_id = session.query(model.Station).filter_by(given_id=triplet).one()
 					source = 'SNOTEL'
 					units = 'in'
-					date = datetime.strptime(snow_data['data'][0]['Date'], '%Y-%m-%d')
+					# date = datetime.strptime(snow_data['data'][0]['Date'], '%Y-%m-%d')
+					# To try, so that timestamping is included:
+					date = datetime.now()
 					depth = int(snow_data['data'][0]['Snow Depth (in)'])
 					depth_change = None
 					water_equiv = None

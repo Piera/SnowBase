@@ -8,13 +8,12 @@ font-family: 'Roboto' !important;
 width: 30%;
 }
 
-
 #snow_report {
 }
 
 #map-canvas {
-        height: 550px;
-        /*width: 900px;*/
+        height: 500px;
+        width: 600px;
         padding: 20px;
 }
 
@@ -26,16 +25,15 @@ width: 30%;
 }
 
 /*styles for d3*/
-/* styles for bar chart */
 
 .xAxis path, .xAxis line, .yAxis path, .yAxis line{
-    stroke: darkgray;
+    stroke: gray;
     stroke-width: 1px;
     fill: none;
 }
 
 .bar {
-    fill: orange;
+    fill: blue;
 }
 
 #linechart path {
@@ -44,5 +42,5 @@ width: 30%;
 }
 
 path {
-    stroke: orange;
+    stroke: blue;
 }

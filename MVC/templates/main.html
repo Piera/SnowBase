@@ -4,8 +4,8 @@
     <head>
 
         <title> Home Page </title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/stylesheet.css') }}"> 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/stylesheet.css') }}"> 
         <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
  
     </head>
@@ -23,14 +23,22 @@
           </form>
         </div>
 
-        <div id="map-canvas"></div>
-        <div class="col-md-6">
-            <table class="table table-hover" id="stations_data">
-            </table>
-        </div>  
-        <div class="col-md-6">
-            <div id="barchart_depth" class="chart"></div>
-            <div id="barchart_density" class="chart"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="map-canvas"></div>
+            </div> 
+            <div class="col-md-6">
+                <table class="table table-hover" id="stations_data"></table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div id="barchart_depth" class="chart"></div>
+            </div> 
+            <div class="col-md-6">
+                <div id="barchart_density" class="chart"></div>
+            </div>
         </div>
 
         <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>

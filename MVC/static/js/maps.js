@@ -127,16 +127,16 @@ $('#find_snow').click(function() {
       function (response) {
         // console.log(response['closest'][2]['lat']);
         function getCircle(depth) {
-                      return {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: 'blue',
-                        fillOpacity: .5,
-                        // scale: Math.pow(2.2, depth) / Math.PI,
-                        scale: depth*10/10000,
-                        strokeColor: 'blue',
-                        strokeWeight: .7
-                      };
-                  }
+          return {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'blue',
+            fillOpacity: .5,
+            // scale: Math.pow(2.2, depth) / Math.PI,
+            scale: depth*10/10000,
+            strokeColor: 'blue',
+            strokeWeight: .7
+          };
+        }
         var infowindow = null;
         var image = ('static/img/marker_blue.png');
         infowindow = new google.maps.InfoWindow();
@@ -156,18 +156,17 @@ $('#find_snow').click(function() {
           // icon: getCircle(marker_depth),
           animation: google.maps.Animation.DROP,
           title: (response['closest'][i]['name'] + ", " + "Snow depth: " + response['closest'][i]['depth'] + " in."),
-          info: ("<strong>Station:</strong> " + response['closest'][i]['name'] +  "<br><strong>Elevation:</strong> " + response['closest'][i]['ele'] + "<br><strong>Distance:</strong> " + response['closest'][i]['dist'] + " mi." + "<br><strong>Snow depth:</strong> " + response['closest'][i]['depth'] + " in." + "<br><strong>Depth change:</strong> " + response['closest'][i]['depth_change'] + " in.")
+          // info: ("<strong>Station:</strong> " + response['closest'][i]['name'] +  "<br><strong>Elevation:</strong> " + response['closest'][i]['ele'] + "<br><strong>Distance:</strong> " + response['closest'][i]['dist'] + " mi." + "<br><strong>Snow depth:</strong> " + response['closest'][i]['depth'] + " in." + "<br><strong>Depth change:</strong> " + response['closest'][i]['depth_change'] + " in.")
            });
 
-          google.maps.event.addListener(marker, 'click', function() {
-                //marker.info.open(map, this);
-                infowindow.setContent(this.info);
-                infowindow.open(map, this);
-            });
-
+          google.maps.event.addListener(marker, 'hover', function() {
+            //marker.info.open(map, this);
+            infowindow.setContent(this.info);
+            infowindow.open(map, this);
+          });
           positions.push(marker);
-
         }
+        console.log("Marker positions: " + positions);
 
         // --------- Fitbounds and heatmaps
 
@@ -190,11 +189,8 @@ $('#find_snow').click(function() {
         // --------- Table report
 
         $('#stations_data').html('')
-
         var table_headers = "<thead><tr class = 'snow_data' id='snow_data_table'><td class='column_header' id='stations'><center><strong>Station</center></strong></td><td class='column_header' id='distances'><center><strong>Distance</center></strong></td><td class='column_header' id='elevations'><center><strong>Elevation</center></strong></td><td class='column_header' id='depths'><center><strong>Snow Depth</center></strong></td><td class='column_header' id='Snow Density'><center><strong>Snow Density</strong></center></td></tr><thead>"
-
         $('#stations_data').append(table_headers)
-
         for (var i = 0; i < response['closest'].length; i++) {
           var density;
           if (response['closest'][i]['density'] === "N/A") {
@@ -241,7 +237,6 @@ $('#find_snow').click(function() {
         // --------- End, table report
 
         }
-
       },
       "json"
     );

@@ -110,23 +110,29 @@ def charts():
 @app.route("/alert", methods = ['GET','POST'])
 def alert():
 # Getting Twilio working, and sending test text messages
-	status = request.values.get("alert", 0, type=int)
-	station = request.values.get("station", 0, type=int)
-	if status == 1:
-		client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-		number_to_text = "+15104074337"
-		station = dbsession.query(model.Station).first()
-		depth = station.snow_data[-1].depth
-		depth_change = station.snow_data[-1].depth_change
-		hello = "Station: %s, Snow depth: %s in., Depth change: %s in!" % (station.name, depth, depth_change)
-		print hello
-		message = client.messages.create(from_=TWILIO_NUMBER,
-										to=number_to_text,
-										body=hello)
-		response = json.dumps(hello, message.sid)
-		print message.sid
-		return response
-# End of Twilio test.
+	# status = request.values.get("alert", 0, type=int)
+	# station = request.values.get("station", 0, type=int)
+	# if status == 1:
+	from_number = request.values.get('From')
+	station = request.values.get('Body')
+	client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+	number_to_text = from_number
+	station_alert = dbsession.query(model.Station).get(station)
+	depth = station_alert.snow_data[-1].depth
+	depth_change = station_alert.snow_data[-1].depth_change
+	hello = "Hello"
+	# hello = "Station: %s, Snow depth: %s in., Depth change: %s in!" % (station.name, depth, depth_change)
+	hello = "Station: %s, Snow depth: %s in., Depth change: %s in!" % (station_alert.name, depth, depth_change)
+	message = client.messages.create(from_=TWILIO_NUMBER,
+									to=number_to_text,
+									body=hello)
+	# response = json.dumps(hello, message.sid)
+	# print message.sid
+	# return response
+	# End of Twilio test.
+	resp = twilio.twiml.Response()
+	resp.message(message)
+	return str(resp)
 
 # ----------- 
 

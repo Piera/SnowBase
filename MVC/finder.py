@@ -3,12 +3,14 @@ import json
 import csv
 import urllib2
 import model
+from alerts import load_alert
 import operator
 from twilio.rest import TwilioRestClient
 from haversine import distance
 from jinja2 import Template
 from sqlalchemy import desc
 from sqlalchemy import select
+from sqlalchemy import Table, Column, Float, Integer, Boolean, String, MetaData, ForeignKey
 from flask import Flask, render_template, request, make_response, session
 from model import session as dbsession
 
@@ -46,8 +48,10 @@ def lookup():
 			if u.depth != None and u.depth > 0:
 				if u.water_equiv != None and u.water_equiv != 0:
 					density = (int((u.water_equiv / u.depth) * 100))
+					if density > 100:
+							density = 100
 				else: 
-					density = "N/A" 
+					density = "No Data" 
 				dist_list.append({'dist':mi, 'id':counter.given_id, 'ele':counter.elevation, 'lat':counter.latitude, 'lng':counter.longitude, 'name':counter.name, 'depth':u.depth,\
 				'depth_change':u.depth_change, 'density':density})
 			else:
@@ -109,63 +113,21 @@ def charts():
 	
 @app.route("/alert", methods = ['GET','POST'])
 def alert():
-# Getting Twilio working, and sending test text messages
-	# status = request.values.get("alert", 0, type=int)
-	# station = request.values.get("station", 0, type=int)
-	# if status == 1:
 	from_number = request.values.get('From')
 	station = request.values.get('Body')
+
 	client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 	number_to_text = from_number
 	station_alert = dbsession.query(model.Station).get(station)
 	depth = station_alert.snow_data[-1].depth
 	depth_change = station_alert.snow_data[-1].depth_change
-	hello = "Hello"
-	# hello = "Station: %s, Snow depth: %s in., Depth change: %s in!" % (station.name, depth, depth_change)
-	hello = "Station: %s, Snow depth: %s in., Depth change: %s in!" % (station_alert.name, depth, depth_change)
+	hello = "Station: %s, Snow depth: %s in., Depth change: %s in." % (station_alert.name, depth, depth_change)
 	message = client.messages.create(from_=TWILIO_NUMBER,
 									to=number_to_text,
 									body=hello)
-	# response = json.dumps(hello, message.sid)
-	# print message.sid
-	# return response
-	# End of Twilio test.
-	resp = twilio.twiml.Response()
-	resp.message(message)
-	return str(resp)
-
-# ----------- 
-
-# Alert functionality goes something like this:
-# If user clicks set alert button, and user phone number is authenticated
-# Add station, phone number to alert db and set alert status to false
-
-# Every day cron job -- once running, put this into new file:
-# Query station_ids found in the alerts table
-	# alert_station = dbsession.query(model.Alerts).all()
-	# for counter in alert_station:
-# if depth_change > 0
-		# d = dbsession.query(model.Stations).filter_by(alert_station.station_id)
-		# u = d.snow_data[-1]
-# if depth_change > 0
-# and alert status = False
-		# if u.depth_change > 0 and alert_station.status = False:
-# Send alert to phone number for user_ids for that station_id
-			# message_string = "Snow alert! Station: %s, Snow depth: %s in., Depth change: %s in!" % (d.name, u.depth, u.depth_change)
-			# message = client.message.create(from = TWILIO_NUMBER,
-			# 								to=alert_station.phone_number
-			# 								body=message_string)
-# Change alert status to True
-			# alert_station.status =True
-# Update datetime in last_alert
-			# alert_station.date = datetime(now)
-			# session.commit()
-# if user replies to alert text
-# Set alert status to False
-# demo code - something like this:
-	# from_number = request.values.get('From')
-	# alert_station.phone_number.get(status) = False
-	# session.commit()
+	# Add alert info to alerts table:
+	load_alert(from_number, station)
+	return "Alert sent"
 
 if __name__ == "__main__":
     app.run(debug = True)

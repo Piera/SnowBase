@@ -4,7 +4,7 @@ import csv
 import ast # Converts "True" and "False" to boolean values
 import urllib2
 import model
-from model import Snow_Data
+from model import Snow_Data, Alert
 from datetime import datetime
 from sqlalchemy import Table, Column, Float, Integer, Boolean, String, MetaData, ForeignKey
 
@@ -61,5 +61,5 @@ def main(session):
 	load_snow_data(session)
     
 if __name__ == "__main__":
-    s= model.add_data()
+    s = model.session
     main(s)

@@ -2,9 +2,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 from sqlalchemy import create_engine, Column, ForeignKey, Float, Integer, String, DateTime, Boolean
 
-ENGINE = None
-Session = None
-
 ENGINE = create_engine("sqlite:///Snow.db", echo = False)
 session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
 Base = declarative_base()
@@ -37,16 +34,24 @@ class Snow_Data(Base):
     water_equiv_change = Column(Float, nullable = True)
     station = relationship("Station", backref=backref("snow_data", order_by=id))
 
+class Alert(Base):
+    __tablename__ = "alerts"
 
-def add_data():
-    global ENGINE
-    global Session
+    id = Column(Integer, primary_key=True)
+    station_id = Column(Integer, ForeignKey('stations.id'))
+    phone_number = Column(String(30), nullable = False)
+    status = Column(Boolean(50), unique=False)
+    station = relationship("Station", backref=backref("alerts", order_by=id))
 
-    ENGINE = create_engine("sqlite:///Snow.db", echo = True)
-    Session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
+# def add_data():
+#     global ENGINE
+#     global Session
 
-    session = Session()
-    return Session()
+#     ENGINE = create_engine("sqlite:///Snow.db", echo = True)
+#     Session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
+
+#     session = Session()
+#     return Session()
 
 def create_tables():
     global ENGINE

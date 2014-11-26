@@ -35,7 +35,7 @@ function barchart_depth (data) {
     y.domain([0, d3.max(json, function(d) { return d.depth; })]).nice();
 
     barchart.append("text")
-        .text("7-Day Snow Depth Trend for the " + label + " Station")
+        .text("Snow Depth Trend for the " + label + " Station")
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("class", "title")
@@ -103,7 +103,7 @@ function barchart_density (data) {
     y.domain([0, d3.max(json, function(d) { return d.density; })]).nice();
 
     barchart.append("text")
-        .text("7-Day Snow Density Trend for the " + label + " Station")
+        .text("Snow Density Trend for the " + label + " Station")
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("class", "title")

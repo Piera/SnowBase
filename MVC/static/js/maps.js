@@ -193,8 +193,8 @@ $('#find_snow').click(function() {
         $('#stations_data').append(table_headers)
         for (var i = 0; i < response['closest'].length; i++) {
           var density;
-          if (response['closest'][i]['density'] === "N/A") {
-            density = "N/A"
+          if (response['closest'][i]['density'] === "No Data") {
+            density = "No Data"
           } else {
             density = (response['closest'][i]['density'] + "%");
           }

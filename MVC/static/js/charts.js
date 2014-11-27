@@ -29,7 +29,7 @@ function barchart_depth (data) {
     var json = data;
     var label = json[0].station;
     console.log(label);
-    // console.log("The data is in the barchart function: " + json);
+    console.log("The data is in the barchart function: " + json);
     x.domain(json.map(function(d) { return d['date'] }));
     // x.domain([0, d3.max(json, function(d) { return d['date']; })])
     y.domain([0, d3.max(json, function(d) { return d.depth; })]).nice();
@@ -97,7 +97,7 @@ function barchart_density (data) {
     var json = data;
     var label = json[0].station;
     console.log(label);
-    // console.log("The data is in the barchart function: " + json);
+    console.log("The data is in the barchart function: " + json[0]['date'], json[1]['date'], json[2]['date'], json[3]['date'], json[4]['date'], json[5]['date'], json[6]['date']);
     x.domain(json.map(function(d) { return d['date'] }));
     // x.domain([0, d3.max(json, function(d) { return d['date']; })])
     y.domain([0, d3.max(json, function(d) { return d.density; })]).nice();

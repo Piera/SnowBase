@@ -43,15 +43,15 @@ class Alert(Base):
     status = Column(Boolean(50), unique=False)
     station = relationship("Station", backref=backref("alerts", order_by=id))
 
-# def add_data():
-#     global ENGINE
-#     global Session
+def add_data():
+    global ENGINE
+    global Session
 
-#     ENGINE = create_engine("sqlite:///Snow.db", echo = True)
-#     Session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
+    ENGINE = create_engine("sqlite:///Snow.db", echo = True)
+    Session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
 
-#     session = Session()
-#     return Session()
+    session = Session()
+    return Session()
 
 def create_tables():
     global ENGINE

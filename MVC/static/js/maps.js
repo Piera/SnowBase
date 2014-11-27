@@ -11,25 +11,6 @@ $(document).ready(function() {
 
 initialize();
 
-// -------  Text alert in progress
-
-$("#test_alert").click(function() {
-  $.post(
-    "/alert",
-    {
-      alert: 1,
-      station: 5
-    },
-    function (response) {
-      console.log(response);
-      console.log("Got it");
-     },
-     "json"
-  );
-});
-
-// ---------- End Text alert
-
 // ---------- See all points on heatmap
 
 $("#see_all").click(function() {
@@ -85,7 +66,7 @@ $("#see_all").click(function() {
 
 // ---------- Accept return as a submission event. Not sure why this is not working.
 
-$('#snow_field').keydown(function(event){    
+$('#address').keypress(function(event){    
     if(event.keyCode==13){
        console.log("Hey I got here");
        $('#find_snow').trigger('click');

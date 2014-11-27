@@ -10,6 +10,7 @@ from haversine import distance
 from jinja2 import Template
 from sqlalchemy import desc
 from sqlalchemy import select
+from sqlalchemy.sql.expression import func
 from sqlalchemy import Table, Column, Float, Integer, Boolean, String, MetaData, ForeignKey
 from flask import Flask, render_template, request, make_response, session
 from model import session as dbsession
@@ -35,7 +36,7 @@ def lookup():
 	print l, g
 	# Iterate through stations.latitude, stations.longitude and use haversine function to find closest stations
 	#  closest stations that are reporting, and where snow depth > 0.
-	#  ...this is so slow. How can I make it faster?
+	#  ...this is so slow. How can I make it faster?  --> Geospatial database, different algorithm
 	dist_list = []
 	s = dbsession.query(model.Station).all()
 	for counter in s:
@@ -67,7 +68,7 @@ def lookup():
 	# Next:
 	# Make this better - look at 5 stations (or radius?), if no snow, look at next 5 closest stations (or wider radius).
 	#  or take radius input.
-	# Return best snow quality (based on water_equiv)
+	# Return best snow quality (based on density, temp, depth)
 
 @app.route("/see_all", methods = ['GET','POST'])
 def see_all():
@@ -78,7 +79,6 @@ def see_all():
 		for counter in s:
 			try: 
 				u = counter.snow_data[-1]
-				# use if != None... or [] -- try/except can hide other errors!
 				if u.depth != None and u.depth > 0:
 					all_depth.append({'lat': counter.latitude, 'lng': counter.longitude, 'name':counter.name, 'depth':u.depth})
 				else:
@@ -92,18 +92,22 @@ def see_all():
 @app.route("/charts", methods = ['GET','POST'])
 def charts():
 	station_name = request.args.get("station")
+	print station_name
 	result = dbsession.query(model.Station).filter_by(name=station_name).one()
+	# print result.id
+	# trend_data = dbsession.query(model.Snow_Data).filter_by(station_id=result.id)
+	# print trend_data[-7:]
 	u = []
 	u = result.snow_data[-7:]
-	print u
 	chart_data = []
 	for item in u:
-		# if item.depth != None and item.depth > 0:
 		if item.water_equiv != None and item.water_equiv != 0:
 			if item.depth == 0:
 				density = 0
 			else:
 				density = int((item.water_equiv / item.depth) * 100)
+				if density > 100:
+					density = 100
 		else:
 			density = 0
 		chart_data.append({"date":item.date.strftime("%m/%d/%y"),"depth":item.depth,"station":station_name,"density":density})
@@ -115,18 +119,19 @@ def charts():
 def alert():
 	from_number = request.values.get('From')
 	station = request.values.get('Body')
-
 	client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 	number_to_text = from_number
 	station_alert = dbsession.query(model.Station).get(station)
-	depth = station_alert.snow_data[-1].depth
-	depth_change = station_alert.snow_data[-1].depth_change
-	hello = "Station: %s, Snow depth: %s in., Depth change: %s in." % (station_alert.name, depth, depth_change)
-	message = client.messages.create(from_=TWILIO_NUMBER,
+	if int(station) > 0 and int(station) < 868:
+		# Send confirmation message and send alert info to alerts table:
+		hello = "You set an alert for station: %s!  We'll let you know when that station registers new snow!" % (station_alert.name)
+		message = client.messages.create(from_=TWILIO_NUMBER,
 									to=number_to_text,
 									body=hello)
-	# Add alert info to alerts table:
-	load_alert(from_number, station)
+		load_alert(from_number, station)
+	else:
+		# invalid input handling - need upstream scrub for text entries.
+		hello = "%s is an invalid station number, please try again!" % (station)
 	return "Alert sent"
 
 if __name__ == "__main__":

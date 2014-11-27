@@ -34,7 +34,7 @@ def load_stations(session):
 
 # Seed the database of snow data from a CSV file:
 def load_snow_data_csv(session):
-	with open('SnowDataParsed2014-11-08-0152Z.csv') as csvfile:
+	with open('/Users/pieradamonte/Dropbox/Hackbright/HBProject/Outputs/SnowDataParsed2014-11-24-0721Z.csv') as csvfile:
 		snow_reader = csv.reader(csvfile, delimiter = ',')
 		for snow_data in snow_reader: 
 			if snow_data[8]:
@@ -109,7 +109,7 @@ def load_snow_data_API(session):
 		session.commit()
 
 def main(session):
-	load_stations(session)
+	# load_stations(session)
 	load_snow_data_csv(session)
 	# load_snow_data_API(session)
     

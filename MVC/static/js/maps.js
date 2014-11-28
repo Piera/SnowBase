@@ -66,16 +66,17 @@ $("#see_all").click(function() {
 
 // ---------- Accept return as a submission event. Not sure why this is not working.
 
-$('#address').keypress(function(event){    
-    if(event.keyCode==13){
-       console.log("Hey I got here");
-       $('#find_snow').trigger('click');
-    }
-});
+// $('#address').keypress(function(event){    
+//     if(event.keyCode==13){
+//        console.log("Hey I got here");
+//        $('#find_snow').trigger('click');
+//     }
+// });
 
 // ---------- End, accept return as a submission event         
 
-$('#find_snow').click(function() {
+$('#address-form').submit(function(evt) {
+  evt.preventDefault();   // don't do the normal thing
   clearAllMap(map);
   coordinates_array = [];
   if (heatmap) {
@@ -137,11 +138,11 @@ $('#find_snow').click(function() {
           // icon: getCircle(marker_depth),
           animation: google.maps.Animation.DROP,
           title: (response['closest'][i]['name'] + ", " + "Snow depth: " + response['closest'][i]['depth'] + " in."),
-          // info: ("<strong>Station:</strong> " + response['closest'][i]['name'] +  "<br><strong>Elevation:</strong> " + response['closest'][i]['ele'] + "<br><strong>Distance:</strong> " + response['closest'][i]['dist'] + " mi." + "<br><strong>Snow depth:</strong> " + response['closest'][i]['depth'] + " in." + "<br><strong>Depth change:</strong> " + response['closest'][i]['depth_change'] + " in.")
+          info: ("<strong>Station:</strong> " + response['closest'][i]['name'] +  "<br><strong>Elevation:</strong> " + response['closest'][i]['ele'] + "<br><strong>Distance:</strong> " + response['closest'][i]['dist'] + " mi." + "<br><strong>Snow depth:</strong> " + response['closest'][i]['depth'] + " in." + "<br><strong>Depth change:</strong> " + response['closest'][i]['depth_change'] + " in.")
            });
 
           google.maps.event.addListener(marker, 'hover', function() {
-            //marker.info.open(map, this);
+            marker.info.open(map, this);
             infowindow.setContent(this.info);
             infowindow.open(map, this);
           });
@@ -179,7 +180,7 @@ $('#find_snow').click(function() {
           } else {
             density = (response['closest'][i]['density'] + "%");
           }
-        $('#stations_data').append("<tr><td>" + response['closest'][i]['name'] + "</td><td><center>" + response['closest'][i]['dist'] + " mi. </center></td><td><center>" + response['closest'][i]['ele'] + " ft. </center></td><td><center>" + response['closest'][i]['depth'] + " in. </center></td><td><center>" + density + "</center></td></tr>");
+          $('#stations_data').append("<tr><td>" + response['closest'][i]['name'] + "</td><td><center>" + response['closest'][i]['dist'] + " mi. </center></td><td><center>" + response['closest'][i]['ele'] + " ft. </center></td><td><center>" + response['closest'][i]['depth'] + " in. </center></td><td><center>" + density + "</center></td></tr>");
 
         // --------- End table report
         
@@ -202,11 +203,22 @@ $('#find_snow').click(function() {
               {
                 console.log('This is the chart data: '+ response);
                 $.getScript("static/js/charts.js", function(){
-                // alert("Script loaded and executed.");
-                $("#barchart_depth").empty();
-                $("#barchart_density").empty();
-                barchart_depth(response);
-                barchart_density(response);
+                  // alert("Script loaded and executed.");
+                  $("#barchart_depth").empty();
+                  $("#barchart_density").empty();
+                  barchart_depth(response);
+                  barchart_density(response);
+                  console.log("latlng", response[0]['lat'], response[0]['lng'], response);
+                  // Draw map markers
+                  var hover_coordinate = new google.maps.LatLng(response[0]['lat'],response[0]['lng']);
+                  console.log("Hover coordinates: " + hover_coordinate);
+                  marker = new google.maps.Marker
+                        ({
+                      map: map,
+                      position: hover_coordinate
+                       });
+                    positions.push(marker);
+
                 });
               },
               "json"

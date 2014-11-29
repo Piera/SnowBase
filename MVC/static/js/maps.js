@@ -3,6 +3,7 @@ var map;
 var lat;
 var lng;
 var positions = [];
+var hover_markers = [];
 var coordinates_array = [];
 var heatmap;
 var bounds;
@@ -62,18 +63,7 @@ $("#see_all").click(function() {
 
 // ---------- End see all points on heatmap
 
-// ---------- Location based snow report
-
-// ---------- Accept return as a submission event. Not sure why this is not working.
-
-// $('#address').keypress(function(event){    
-//     if(event.keyCode==13){
-//        console.log("Hey I got here");
-//        $('#find_snow').trigger('click');
-//     }
-// });
-
-// ---------- End, accept return as a submission event         
+// ---------- Location based snow report      
 
 $('#address-form').submit(function(evt) {
   evt.preventDefault();   // don't do the normal thing
@@ -210,6 +200,10 @@ $('#address-form').submit(function(evt) {
                   barchart_density(response);
                   console.log("latlng", response[0]['lat'], response[0]['lng'], response);
                   // Draw map markers
+                  if (hover_markers.length != 0) {
+                    hover_markers[0].setMap(null);
+                  }
+                  hover_markers=[];
                   var hover_coordinate = new google.maps.LatLng(response[0]['lat'],response[0]['lng']);
                   console.log("Hover coordinates: " + hover_coordinate);
                   marker = new google.maps.Marker
@@ -217,8 +211,7 @@ $('#address-form').submit(function(evt) {
                       map: map,
                       position: hover_coordinate
                        });
-                    positions.push(marker);
-
+                  hover_markers.push(marker);
                 });
               },
               "json"
@@ -242,7 +235,7 @@ $('#address-form').submit(function(evt) {
 // ---------- Map clearing function
 
 function clearAllMap(map) {
-if (positions) 
+if (positions.length !=0) 
 {
   for (var i = 0; i < positions.length; i++) 
     {
@@ -254,6 +247,10 @@ if (positions)
     {
     console.log("hi Piera");
     }
+if (hover_markers.length != 0) {
+    hover_markers[0].setMap(null);
+                  }
+    hover_markers=[];
 }
 
 // ---------- End map clearing function
@@ -312,7 +309,7 @@ var mapOptions = {
   mapTypeId: [google.maps.MapTypeId.TERRAIN, 'map_style']
    },
   disableDefaultUI: true,
-  panControl: true,
+  panControl: false,
   zoomControl: true,
   scaleControl: false,
   mapTypeControl: true,

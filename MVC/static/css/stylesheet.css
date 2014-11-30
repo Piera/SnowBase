@@ -25,13 +25,28 @@ h2.logo-script {
     width: 30%;
 }
 
+div #map-gradient-key {
+    padding: 5px;
+    width: 670px;
+    background: #00e1ff; /* Old browsers */
+    background: -moz-linear-gradient(left,  #00e1ff 0%, #0000ff 42%, #e10000 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#00e1ff), color-stop(42%,#0000ff), color-stop(100%,#e10000)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #00e1ff 0%,#0000ff 42%,#e10000 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #00e1ff 0%,#0000ff 42%,#e10000 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #00e1ff 0%,#0000ff 42%,#e10000 100%); /* IE10+ */
+    background: linear-gradient(to right,  #00e1ff 0%,#0000ff 42%,#e10000 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00e1ff', endColorstr='#e10000',GradientType=1 ); /* IE6-9 */
+
+}
+
+
 div #welcome-text {
     /*padding:150px;*/
     background: rgba(195, 195, 195, 0.8);
 }
 
 #map-canvas {
-    height: 496px;
+    height: 465px;
     width: 670px;
     padding: 25px;
 }

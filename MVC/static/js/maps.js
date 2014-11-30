@@ -27,8 +27,8 @@ $("#see_all").click(function() {
       button: 1
     },
     function (response) {
-      console.log(response);
-      console.log("Got it");
+      // console.log(response);
+      // console.log("Got it");
       var all_map = [];
       for (var i in response)
         {
@@ -118,7 +118,7 @@ $('#address-form').submit(function(evt) {
           var point_weight = response['closest'][i]['depth']*1.5;
           coordinates_array.push({location: coordinates, weight: point_weight});
           // console.log("Heatmap array: " + coordinates_array);
-          var marker_depth = response['closest'][i]['depth'];
+          // var marker_depth = response['closest'][i]['depth'];
           // console.log("Marker_depth: " + marker_depth);
           marker = new google.maps.Marker
             ({
@@ -127,12 +127,11 @@ $('#address-form').submit(function(evt) {
           icon: image,
           // icon: getCircle(marker_depth),
           animation: google.maps.Animation.DROP,
-          title: (response['closest'][i]['name'] + ", " + "Snow depth: " + response['closest'][i]['depth'] + " in."),
-          info: ("<strong>Station:</strong> " + response['closest'][i]['name'] +  "<br><strong>Elevation:</strong> " + response['closest'][i]['ele'] + "<br><strong>Distance:</strong> " + response['closest'][i]['dist'] + " mi." + "<br><strong>Snow depth:</strong> " + response['closest'][i]['depth'] + " in." + "<br><strong>Depth change:</strong> " + response['closest'][i]['depth_change'] + " in.")
+          // title: (response['closest'][i]['name'] + ", " + "Snow depth: " + response['closest'][i]['depth'] + " in."),
+          info: ("<i class='glyphicon glyphicon-phone'></i>&nbsp;&nbsp;Get a text alert when<br>" + response['closest'][i]['name'] + " station<br>receives new snow!<br><strong>Text " + response['closest'][i]['text-code'] + " to (510) 447-1579</strong>")
            });
-
-          google.maps.event.addListener(marker, 'hover', function() {
-            marker.info.open(map, this);
+            google.maps.event.addListener(marker, 'click', function() {
+            // marker.info.open(map, this);
             infowindow.setContent(this.info);
             infowindow.open(map, this);
           });
@@ -150,7 +149,7 @@ $('#address-form').submit(function(evt) {
         // console.log("Positions array: " + positions);
         heatmap = new google.maps.visualization.HeatmapLayer({
         data: coordinates_array,
-        radius: 25,
+        radius: 30,
         gradient: gradient,
         dissipating: true
         });
@@ -161,8 +160,12 @@ $('#address-form').submit(function(evt) {
         // --------- Table report
 
         $('#stations_data').html('')
-        var table_headers = "<thead><tr class = 'snow_data' id='snow_data_table'><td class='column_header' id='stations'><center><strong>Station</center></strong></td><td class='column_header' id='distances'><center><strong>Distance</center></strong></td><td class='column_header' id='elevations'><center><strong>Elevation</center></strong></td><td class='column_header' id='depths'><center><strong>Snow Depth</center></strong></td><td class='column_header' id='Snow Density'><center><strong>Snow Density</strong></center></td></tr><thead>"
+        $('#text-info').html('')
+        $('#time-stamp').html('')
+        $('#time-stamp').append("  Last update: " + response['time_stamp'] + " PST / (24h)").addClass("padded-info")
+          var table_headers = "<thead><tr class = 'snow_data' id='snow_data_table'><td class='column_header' id='stations'><center><strong>Station</center></strong></td><td class='column header' id='text code'><center><span class='glyphicon glyphicon-phone'></span></center></td><td class='column_header' id='distances'><center><strong>Distance</center></strong></td><td class='column_header' id='elevations'><center><strong>Elevation</center></strong></td><td class='column_header' id='depths'><center><strong>Snow Depth</center></strong></td><td class='column_header' id='Snow Density'><center><strong>Snow Density</strong></center></td></tr><thead>"
         $('#stations_data').append(table_headers)
+        $('#text-info').append("<center>Text any station code to (510) 447-1579 to receive a text alert when there is new snow!</center>").addClass("padded-info")
         for (var i = 0; i < response['closest'].length; i++) {
           var density;
           if (response['closest'][i]['density'] === "No Data") {
@@ -170,17 +173,19 @@ $('#address-form').submit(function(evt) {
           } else {
             density = (response['closest'][i]['density'] + "%");
           }
-          $('#stations_data').append("<tr><td>" + response['closest'][i]['name'] + "</td><td><center>" + response['closest'][i]['dist'] + " mi. </center></td><td><center>" + response['closest'][i]['ele'] + " ft. </center></td><td><center>" + response['closest'][i]['depth'] + " in. </center></td><td><center>" + density + "</center></td></tr>");
-
+          $('#stations_data').append("<tr><td>" + response['closest'][i]['name'] + "</td><td><center><span class='badge'>" + response['closest'][i]['text-code'] + "</span></center></td><td><center>" + response['closest'][i]['dist'] + " mi. </center></td><td><center>" + response['closest'][i]['ele'] + " ft. </center></td><td><center>" + response['closest'][i]['depth'] + " in. </center></td><td><center>" + density + "</center></td></tr>");
         // --------- End table report
         
         // ---------- Chart rendering 
 
+        getChart(response['closest'][i]['name']);
         $('#stations_data').on('hover', 'tr', function(event){
           event.stopImmediatePropagation();
           var table_data = $('td:first', this).text();
           console.log('You clicked on this table data: ' + table_data);
-          getChart(table_data);
+          if (table_data != 'Station') {
+            getChart(table_data);
+            } 
           });
 
           function getChart(table_data) {

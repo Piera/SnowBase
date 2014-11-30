@@ -34,11 +34,24 @@ def lookup():
 	g = request.values.get("lng", 0, type=float)
 	session["location"] = {"input":(l,g)}
 	print l, g
-	# Iterate through stations.latitude, stations.longitude and use haversine function to find closest stations
-	#  closest stations that are reporting, and where snow depth > 0.
-	#  ...this is so slow. How can I make it faster?  --> Geospatial database, different algorithm
+	# Check if location is in Alaska. If in Alaska, search Alaska stations.
+	if l > 54:
+		s = dbsession.query(model.Station).filter(model.Station.latitude > 54)
+	if 54 > l > 45:
+		s = dbsession.query(model.Station).filter(54 > model.Station.latitude > 40)
+	else:
+	# Search a slice of the continental US
+		if g < -120:
+			s = dbsession.query(model.Station).filter(model.Station.longitude < -115)
+		if -120 < g < -115:
+			s = dbsession.query(model.Station).filter(-125 < model.Station.longitude < -110)
+		if -115 < g < -110:
+			s = dbsession.query(model.Station).filter(-120 < model.Station.longitude < -105)
+		if -110 < g < -105:
+			s = dbsession.query(model.Station).filter(-115 < model.Station.longitude < -100)
+		if -105 < g: 
+			s = dbsession.query(model.Station).filter(-110 > model.Station.longitude)
 	dist_list = []
-	s = dbsession.query(model.Station).all()
 	for counter in s:
 		try: 
 			u = counter.snow_data[-1]
@@ -53,8 +66,8 @@ def lookup():
 							density = 100
 				else: 
 					density = "No Data" 
-				dist_list.append({'dist':mi, 'id':counter.given_id, 'ele':counter.elevation, 'lat':counter.latitude, 'lng':counter.longitude, 'name':counter.name, 'depth':u.depth,\
-				'depth_change':u.depth_change, 'density':density})
+				dist_list.append({'dist':mi, 'text-code':counter.id, 'id':counter.given_id, 'ele':counter.elevation, 'lat':counter.latitude, 'lng':counter.longitude, 'name':counter.name, 'depth':u.depth,\
+				'depth_change':u.depth_change, 'density':density, 'date':u.date.strftime("%m/%d/%y %H:%M")})
 			else:
 				continue
 		except IndexError:
@@ -62,7 +75,11 @@ def lookup():
 	# Return the 10 closest stations, their distances away in miles (converted from kms)
 	#  and basic telemetry data for that station
 	closest_sta = sorted(dist_list, key=lambda k: k['dist'])[0:10]
-	response = json.dumps({"closest": closest_sta})
+	print type(closest_sta)
+	time_stamp = [x['date'] for x in closest_sta]
+	print max(time_stamp)
+	time_stamp = max(time_stamp)
+	response = json.dumps({"closest": closest_sta, "time_stamp":time_stamp})
 	return response
 
 	# Next:
@@ -94,9 +111,6 @@ def charts():
 	station_name = request.args.get("station")
 	print station_name
 	result = dbsession.query(model.Station).filter_by(name=station_name).one()
-	# print result.id
-	# trend_data = dbsession.query(model.Snow_Data).filter_by(station_id=result.id)
-	# print trend_data[-7:]
 	u = []
 	u = result.snow_data[-7:]
 	chart_data = []
@@ -110,7 +124,7 @@ def charts():
 					density = 100
 		else:
 			density = 0
-		chart_data.append({"date":item.date.strftime("%m/%d/%y"),"depth":item.depth,"station":station_name,"density":density})
+		chart_data.append({"date":item.date.strftime("%m/%d/%y"),"depth":item.depth,"station":station_name,"density":density,"lat":result.latitude,"lng":result.longitude})
 	print chart_data
 	chart_data = json.dumps(chart_data)
 	return chart_data
@@ -122,16 +136,25 @@ def alert():
 	client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 	number_to_text = from_number
 	station_alert = dbsession.query(model.Station).get(station)
-	if int(station) > 0 and int(station) < 868:
-		# Send confirmation message and send alert info to alerts table:
-		hello = "You set an alert for station: %s!  We'll let you know when that station registers new snow!" % (station_alert.name)
-		message = client.messages.create(from_=TWILIO_NUMBER,
-									to=number_to_text,
-									body=hello)
-		load_alert(from_number, station)
-	else:
-		# invalid input handling - need upstream scrub for text entries.
+	try:
+		if int(station) > 0 and int(station) < 868:
+			# Send confirmation message and send alert info to alerts table:
+			hello = "You set an alert for station: %s!  We'll let you know when that station registers new snow!" % (station_alert.name)
+			message = client.messages.create(from_=TWILIO_NUMBER,
+										to=number_to_text,
+										body=hello)
+			load_alert(from_number, station)
+		else:
+			# invalid input handling - need upstream scrub for text entries.
+			hello = "%s is an invalid station number, please try again!" % (station)
+			message = client.messages.create(from_=TWILIO_NUMBER,
+										to=number_to_text,
+										body=hello)
+	except:
 		hello = "%s is an invalid station number, please try again!" % (station)
+		message = client.messages.create(from_=TWILIO_NUMBER,
+										to=number_to_text,
+										body=hello)
 	return "Alert sent"
 
 if __name__ == "__main__":

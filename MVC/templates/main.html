@@ -11,19 +11,22 @@
     </head>
 
     <body>
-        <div class="navbar-header">
-        <!-- <div id="panel"> -->
-          <!-- <form role="form" class="form-inline" id="address-form"> -->
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
             <form role="search" class="navbar-form navbar-left" id="address-form">
-            <div class ="form-group">
-                <label for="inputLocation" class="addressInput"></label>
-                <input id="address" size="100" type="textbox" class="form-control" id="snow_field" value="Paradise, WA">
-                <input type="submit" class="btn btn-default" value="Search" id="find_snow">
-                <!-- <input type="button" class="btn btn-primary" value="See All" id="see_all"> -->
-            </div>
-          </form>
+                <div class ="form-group">
+                    <label for="inputLocation" class="addressInput"></label>
+                    <input id="address" size="100" type="textbox" class="form-control" id="snow_field" value="Paradise, WA">
+                    <input type="submit" class="btn btn-default" data-loading-text="Loading..." value="Search" id="find_snow">
+                    <!-- <input type="button" class="btn btn-primary" value="See All" id="see_all"> -->
+                </div>
+            </form>
+
+        <!-- <div class="container"> -->
+            <p class="navbar-text navbar-right"><h2 id="logo-script">&#x2744; Snowbase</h2></p>
         <!-- </div> -->
-        </div>
+        </nav>
 
         <div class="row">
             <div class="col-md-6">
@@ -49,6 +52,7 @@
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
         <script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true"></script>
         <link href='http://fonts.googleapis.com/css?family=Leckerli+One' rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="{{ url_for('static', filename='js/charts.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/maps.js') }}"></script>
 

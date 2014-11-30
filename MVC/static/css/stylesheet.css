@@ -1,20 +1,38 @@
 body { 
     padding: 20px;
-    margin: 20px;
+    margin: 10px;
     font-family: 'Roboto';
-    /*background: rgba(195, 195, 195, 0.8);*/
+    padding-top: 65px;
+    /*background: url('/static/img/IMG_0706.JPG') no-repeat center center fixed; 
+    background-size:100%;*/
 }
+
+h2.logo-script {
+    font-family: 'Pacifico', Helvetica, sans-serif; 
+}
+
+.navbar-form .form-control {
+    margin: 5px;
+}
+
+.navbar-default {
+    background-color: #448AFF;
+    border-color: #0D47A1;
+}
+
 
 #address {
     width: 30%;
 }
 
-#snow_report {
+div #welcome-text {
+    /*padding:150px;*/
+    background: rgba(195, 195, 195, 0.8);
 }
 
 #map-canvas {
-    height: 500px;
-    width: 625px;
+    height: 496px;
+    width: 670px;
     padding: 25px;
 }
 

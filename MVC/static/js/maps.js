@@ -178,7 +178,7 @@ $('#address-form').submit(function(evt) {
         
         // ---------- Chart rendering 
 
-        getChart(response['closest'][i]['name']);
+        getChart(response['closest'][0]['name']);
         $('#stations_data').on('hover', 'tr', function(event){
           event.stopImmediatePropagation();
           var table_data = $('td:first', this).text();
@@ -214,7 +214,7 @@ $('#address-form').submit(function(evt) {
                   marker = new google.maps.Marker
                         ({
                       map: map,
-                      position: hover_coordinate
+                      position: hover_coordinate,
                        });
                   hover_markers.push(marker);
                 });

@@ -1,7 +1,7 @@
 function barchart_depth (data) {
 
     var margin = {top: 30, right: 40, bottom: 40, left: 40},
-        width = 625 - margin.left - margin.right,
+        width = 635 - margin.left - margin.right,
         height = 255 - margin.top - margin.bottom;
     
     var x = d3.scale.ordinal()
@@ -75,7 +75,7 @@ function barchart_density (data) {
     //    .remove();
 
     var margin = {top: 30, right: 40, bottom: 40, left: 40},
-        width = 625 - margin.left - margin.right,
+        width = 635 - margin.left - margin.right,
         height = 255 - margin.top - margin.bottom;
     
     var x = d3.scale.ordinal()

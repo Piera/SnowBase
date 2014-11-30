@@ -49,8 +49,9 @@ def lookup():
 			s = dbsession.query(model.Station).filter(-120 < model.Station.longitude < -105)
 		if -110 < g < -105:
 			s = dbsession.query(model.Station).filter(-115 < model.Station.longitude < -100)
-		if -105 < g: 
-			s = dbsession.query(model.Station).filter(-110 > model.Station.longitude)
+		if g > -105: 
+			print "Florida!"
+			s = dbsession.query(model.Station).filter(-110 < model.Station.longitude)
 	dist_list = []
 	for counter in s:
 		try: 

@@ -1,31 +1,44 @@
 body { 
-padding: 20px;
-margin: 20px;
-font-family: 'Roboto';
-background-image: 'img/Snow.gif';
+    padding: 20px;
+    margin: 20px;
+    font-family: 'Roboto';
+    /*background: rgba(195, 195, 195, 0.8);*/
 }
 
 #address {
-width: 30%;
+    width: 30%;
 }
 
 #snow_report {
 }
 
 #map-canvas {
-        height: 400px;
-        width: 600px;
-        padding: 20px;
+    height: 500px;
+    width: 625px;
+    padding: 25px;
 }
 
 #panel {
-        top: 20px;
-        z-index: 5;
-        background-color: #fff;
-        padding: 20px;
+    top: 20px;
+    z-index: 5;
+    background-color: #fff;
+    padding: 20px;
 }
 
-/*styles for d3*/
+.padded-info {
+    padding: 5px;
+}
+
+#barchart_density
+{
+    margin-top: 30px;
+}
+
+#barchart_depth
+{
+    margin-top: 30px;
+}
+/*styles for d3 charts*/
 
 .xAxis path, .xAxis line, .yAxis path, .yAxis line{
     stroke: gray;
@@ -34,13 +47,13 @@ width: 30%;
 }
 
 .bar {
-    fill: blue;
+    fill: #2196F3;
 }
 
-#linechart path {
+/*#linechart path {
     stroke-width: 2px;
     fill: none;
-}
+}*/
 
 path {
     stroke: blue;

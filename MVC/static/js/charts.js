@@ -1,10 +1,8 @@
 function barchart_depth (data) {
-    // d3.select("#barchart_depth")
-    //    .remove();
 
     var margin = {top: 30, right: 40, bottom: 40, left: 40},
-        width = 600 - margin.left - margin.right,
-        height = 250 - margin.top - margin.bottom;
+        width = 625 - margin.left - margin.right,
+        height = 255 - margin.top - margin.bottom;
     
     var x = d3.scale.ordinal()
         .rangeRoundBands([0, width], .2, .15);
@@ -35,7 +33,7 @@ function barchart_depth (data) {
     y.domain([0, d3.max(json, function(d) { return d.depth; })]).nice();
 
     barchart.append("text")
-        .text("Snow Depth Trend for the " + label + " Station")
+        .text("Snow Depth Trend for the " + label + " Station (in.)")
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("class", "title")
@@ -48,8 +46,14 @@ function barchart_depth (data) {
 
     barchart.append("g")
         .attr("class", "yAxis")
-        .call(yAxis);
-      // ` .append("text");
+        .call(yAxis)
+      // ` .append("text"); for axis label
+        // .append("text")
+        // .attr("transform", "rotate(-90)")
+        // .attr("y", -40)
+        // .attr("dy", ".71em")
+        // .style("text-anchor", "end")
+        // .text("Inches");
     
     barchart.selectAll(".bar")
         .data(json)
@@ -71,8 +75,8 @@ function barchart_density (data) {
     //    .remove();
 
     var margin = {top: 30, right: 40, bottom: 40, left: 40},
-        width = 600 - margin.left - margin.right,
-        height = 250 - margin.top - margin.bottom;
+        width = 625 - margin.left - margin.right,
+        height = 255 - margin.top - margin.bottom;
     
     var x = d3.scale.ordinal()
         .rangeRoundBands([0, width], .2, .15);
@@ -97,13 +101,14 @@ function barchart_density (data) {
     var json = data;
     var label = json[0].station;
     console.log(label);
-    console.log("The data is in the barchart function: " + json[0]['date'], json[1]['date'], json[2]['date'], json[3]['date'], json[4]['date'], json[5]['date'], json[6]['date']);
+    // console.log("The data is in the barchart function: " + json[0]['date'], json[1]['date'], json[2]['date'], json[3]['date'], json[4]['date'], json[5]['date'], json[6]['date']);
     x.domain(json.map(function(d) { return d['date'] }));
     // x.domain([0, d3.max(json, function(d) { return d['date']; })])
-    y.domain([0, d3.max(json, function(d) { return d.density; })]).nice();
+    // y.domain([0, d3.max(json, function(d) { return d.density; })]).nice();
+    y.domain([0, 100]).nice();
 
     barchart.append("text")
-        .text("Snow Density Trend for the " + label + " Station")
+        .text("Snow Density Trend for the " + label + " Station (% water)")
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("class", "title")

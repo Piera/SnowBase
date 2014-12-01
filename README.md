@@ -2,6 +2,7 @@ Fall 2014 Hackbright Final Project: SnowBase
 ============================================
 
 <h2>Overview:</h2>
+
 <p></p>
 <ul><li>SnowBase connects winter backcountry enthusiasts to the most up to date snow pack conditions with one click.</li>
 <li>For those who are eagerly awaiting new snow, easy-to-use text alerts are available for over 860 SnoTel mountain stations.</li>
@@ -25,6 +26,22 @@ Fall 2014 Hackbright Final Project: SnowBase
 
 <p></p>
 <h2>Table of Contents:</h2>
+
+<p></p> 
+<strong>MVC</strong>: Contains flask app files, and reference/scripts needed to create the database of stations and snow telemetry data points.
+<p></p>
+<ul><li>requirements.txt: Requirements for virtual environment.</li>
+<li>finder.py: Flask app for simple capture of lat/long, returns closest stations with data.</li>
+<li>haversine.py: Computation for distance between two points given lat/long for each.</li>
+<li>static and template folders: contain files for view rendering</li>
+<li>model.py:  Create data tables, or add to data tables</li>
+<li>seed.py: Seed table using reference file and/or by calling station APIs</li>
+<li>add.py: Add snow telemetry data to existing database.</li>
+<li>alerts.py: Adds and updates alert data to alerts database
+<li>scan.py: Scans database for alerts, sends alerts
+<li>SnowDataParsed2014-11-08-0152Z.csv: Used to seed tables</li>
+<li>Snow.db: Including db, for running finder.py</li></ul>
+
 <p></p>
 <strong>Cron</strong>: Contains reference and scripts that are used to create files used for cron jobs, and the cron job scripts.
 <p></p>
@@ -39,19 +56,4 @@ Fall 2014 Hackbright Final Project: SnowBase
 <li>KEY: Key for parsing the output from the parsed_cron.py file.</li>
 <li>Various csv files are included as sample output</li></ul>
 
-<p></p> 
-<strong>MVC</strong>: Contains flask app files, and reference/scripts needed to create the database of stations and snow telemetry data points.
-<p></p>
-<ul><li>requirements.txt: Requirements for virtual environment.</li>
-<li>finder.py: Flask app for simple capture of lat/long, returns closest stations with data.</li>
-<li>haversine.py: Computation for distance between two points given lat/long for each.</li>
-<li>static and template folders: contain files for view rendering</li>
-<li>model.py:  Create data tables, or add to data tables</li>
-<li>seed.py: Seed table using reference file and/or by calling station APIs</li>
-<li>add.py: Add snow telemetry data to existing database.</li>
-<li>alerts.py: Administers Twilio alerts
-<li>scan.py: Scans database for alerts, updates alert settings
-<li>SnowDataParsed2014-11-08-0152Z.csv: Used to seed tables</li>
-<li>Snow.db: Including db, for running finder.py</li></ul>
-  
 

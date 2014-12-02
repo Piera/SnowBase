@@ -42,7 +42,7 @@ Fall 2014 Hackbright Final Project: SnowBase
 
 <strong>Usability:</strong> 
 
-![ ScreenShot](https://raw.githubusercontent.com/Piera/Project/master/MVC/Before.png) Existing SnoTel representations require users to zoom, scroll, and click excessivly to find the data for a given SnoTel station.  Currently, there is no way to compare data from any two SnoTel stations.  For this project, I made a "one click" commitment to the end user. Data is easily accessed and compared; I used jQuery and d3 to effortlessly render trending data on when the user hovers on the data chart.  I also included a heatmap layer, gradient key, and marker indicators on the map, so that users can quickly identify where the deepest snow is. 
+![ ScreenShot](align = "left" https://raw.githubusercontent.com/Piera/Project/master/MVC/Before.png) Existing SnoTel representations require users to zoom, scroll, and click excessivly to find the data for a given SnoTel station.  Currently, there is no way to compare data from any two SnoTel stations.  For this project, I made a "one click" commitment to the end user. Data is easily accessed and compared; I used jQuery and d3 to effortlessly render trending data on when the user hovers on the data chart.  I also included a heatmap layer, gradient key, and marker indicators on the map, so that users can quickly identify where the deepest snow is. 
 
 ![ScreenShot ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Before.png)![ ScreenShot](https://raw.githubusercontent.com/Piera/Project/master/MVC/Comparison_chart.png)  
 

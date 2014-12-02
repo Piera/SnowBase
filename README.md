@@ -34,7 +34,7 @@ The SNOTEL system is a system of backcountry snow telemetry stations maintained 
 
 <strong>Data:</strong> 
 
-While the Powderlin.es API provides a robust service, the underlying mechanical system of SNOTEL stations can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server.  Using an SQLite database to store data points ensures that users will not be exposed to delays, and will always find data for their desired locations.  Filtering the data sets for minimally viable data points, and handling cases of non or partially reporting stations was another important consideration.  Determining the minimally viable data point / data set is yet another - this is a judgement that will evolve with further familiarity with the SnoTel system, and with user feedback.  QA on data points is currently conducted by comparing data on the SnoTel site to chart and graph values on SnowBase.
+While the Powderlin.es API provides a robust service, the underlying mechanical system of SNOTEL stations can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server.  Using an SQLite database to store data points ensures that users will not be exposed to delays, and will always find data for their desired locations.  Filtering the data sets for minimally viable data points, and handling cases of non or partially reporting stations was another important consideration.  Determining the minimally viable data point / data set is yet another - this is a judgement that will evolve with further familiarity with the SNOTEL system, and with user feedback.  QA on data points is currently conducted by comparing data on the SNOTEL site to chart and graph values on SnowBase.
 
 ![ Missing data ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Missing_data.png) 
 
@@ -46,7 +46,7 @@ SnowBase takes user input and uses Google Maps geocoding, and the haversine form
 
 <strong>Usability:</strong> 
 
-Existing SnoTel representations require users to zoom, scroll, and click excessivly to find the data for a given SnoTel station.  Currently, there is no way to compare data from any two SnoTel stations.  For this project, I made a "one click" commitment to the end user. Data is easily accessed and compared; I used jQuery and d3 to effortlessly render trending data on when the user hovers on the data chart.  I also included a heatmap layer, gradient key, and marker indicators on the map, so that users can quickly identify where the deepest snow is. 
+Existing SnoTel representations require users to zoom, scroll, and click excessivly to find the data for a given SNOTEL station.  Currently, there is no way to compare data from any two SnoTel stations.  For this project, I made a "one click" commitment to the end user. Data is easily accessed and compared; I used jQuery and d3 to effortlessly render trending data on when the user hovers on the data chart.  I also included a heatmap layer, gradient key, and marker indicators on the map, so that users can quickly identify where the deepest snow is. 
 
 ![ Comparison chart ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Comparison_chart.png)  
 
@@ -60,13 +60,13 @@ The simplicity of the text alert system also reflects the "one click" commitment
 To run SnowBase:
 1. Clone repository
 2. From within MVC directory:
-<ul><li>`pip install -r requirements.txt`
-<li>`source env/bin/activate`
-<li>`python finder.py`</li></ul>
+* `pip install -r requirements.txt`
+* `source env/bin/activate`
+* `python finder.py`
 
 To update or add data points at any time:
-<ul><li>Update add.py with current file location of the url file, then:</li>
-<li>`python add.py`</li>
+* Update add.py with current file location of the url file, then:
+* `python add.py`
 
 To enable the Twilio text alert functionality:
 1. Sign up for a Twilio account
@@ -75,10 +75,10 @@ To enable the Twilio text alert functionality:
 4. `source env/bin/activate`
 5. `python finder.py`
 6. `./ngrok 5000`
-7. Update Twilio with the ngrok URL/alerts</li>
-8.  Text codes to your new Twilio number</li>
-9. Alerts are distributed with each run of Add.py</li>
-10. Or, run scan.py to trigger alerts separately</li></ul>
+7. Update Twilio with the ngrok URL/alerts
+8. Text codes to your new Twilio number
+9. Alerts are distributed with each run of Add.py
+10. Or, run scan.py to trigger alerts separately
 
 <p></p>
 <h2>File Directory:</h2>

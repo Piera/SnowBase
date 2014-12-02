@@ -26,8 +26,7 @@ def load_snow_data(session):
 					station_id = session.query(model.Station).filter_by(given_id=triplet).one()
 					entries = session.query(model.Snow_Data).filter_by(station_id=station_id.id)
 					last_entry = entries[-1]
-					print datetime.date(last_entry.date)
-					print datetime.date(datetime.now())
+					# Compare the dates; if date is the same, update the database
 					if datetime.date(last_entry.date) == datetime.date(datetime.now()):
 						last_entry.source = 'SNOTEL'
 						last_entry.units = 'in'
@@ -49,14 +48,12 @@ def load_snow_data(session):
 						if water_equiv_change != None:
 							last_entry.water_equiv_change = water_equiv_change
 						else:
-							# 'Snow Depth (in)' == None
 							continue
 						session.commit()
+					# If the dates are different, then create a new entry in the database
 					else:
 						source = 'SNOTEL'
 						units = 'in'
-						# date = datetime.strptime(snow_data['data'][0]['Date'], '%Y-%m-%d')
-						# To try, so that timestamping is included:
 						date = datetime.now()
 						depth = int(snow_data['data'][0]['Snow Depth (in)'])
 						depth_change = None
@@ -82,7 +79,6 @@ def load_snow_data(session):
 						if water_equiv_change != None:
 							telemetry_data.water_equiv_change = water_equiv_change
 						else:
-							# 'Snow Depth (in)' == None
 							continue
 						session.add(telemetry_data)
 		session.commit()

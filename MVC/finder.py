@@ -50,7 +50,6 @@ def lookup():
 		if -110 < g < -105:
 			s = dbsession.query(model.Station).filter(-115 < model.Station.longitude < -100)
 		if g > -105: 
-			print "Florida!"
 			s = dbsession.query(model.Station).filter(-110 < model.Station.longitude)
 	dist_list = []
 	for counter in s:
@@ -76,20 +75,14 @@ def lookup():
 	# Return the 10 closest stations, their distances away in miles (converted from kms)
 	#  and basic telemetry data for that station
 	closest_sta = sorted(dist_list, key=lambda k: k['dist'])[0:10]
-	print type(closest_sta)
 	time_stamp = [x['date'] for x in closest_sta]
-	print max(time_stamp)
 	time_stamp = max(time_stamp)
 	response = json.dumps({"closest": closest_sta, "time_stamp":time_stamp})
 	return response
 
-	# Next:
-	# Make this better - look at 5 stations (or radius?), if no snow, look at next 5 closest stations (or wider radius).
-	#  or take radius input.
-	# Return best snow quality (based on density, temp, depth)
-
 @app.route("/see_all", methods = ['GET','POST'])
 def see_all():
+	# See all functionality - returns all of the snow data to view in one heatmap
 	button = request.values.get("button", 0, type=int)
 	if button == 1:
 		all_depth = []
@@ -103,14 +96,13 @@ def see_all():
 					continue
 			except IndexError:
 				print "Index Error exception triggered"
-		print all_depth
 		response = json.dumps(all_depth)
 		return response
 
 @app.route("/charts", methods = ['GET','POST'])
 def charts():
+	# With station name, return data to create d3 charts in display
 	station_name = request.args.get("station")
-	print station_name
 	result = dbsession.query(model.Station).filter_by(name=station_name).one()
 	u = []
 	u = result.snow_data[-7:]
@@ -126,7 +118,6 @@ def charts():
 		else:
 			density = 0
 		chart_data.append({"date":item.date.strftime("%m/%d/%y"),"depth":item.depth,"station":station_name,"density":density,"lat":result.latitude,"lng":result.longitude})
-	print chart_data
 	chart_data = json.dumps(chart_data)
 	return chart_data
 	
@@ -139,14 +130,14 @@ def alert():
 	station_alert = dbsession.query(model.Station).get(station)
 	try:
 		if int(station) > 0 and int(station) < 868:
-			# Send confirmation message and send alert info to alerts table:
+	# Send confirmation message and send alert info to alerts table:
 			hello = "You set an alert for station: %s!  We'll let you know when that station registers new snow!" % (station_alert.name)
 			message = client.messages.create(from_=TWILIO_NUMBER,
 										to=number_to_text,
 										body=hello)
 			load_alert(from_number, station)
 		else:
-			# invalid input handling - need upstream scrub for text entries.
+	# Invalid input handling:
 			hello = "%s is an invalid station number, please try again!" % (station)
 			message = client.messages.create(from_=TWILIO_NUMBER,
 										to=number_to_text,

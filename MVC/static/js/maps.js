@@ -164,7 +164,6 @@ $(document).ready(function() {
           $('#stations_data').on('hover', 'tr', function(event) {
             event.stopImmediatePropagation();
             var table_data = $('td:first', this).text();
-            console.log('You clicked on this table data: ' + table_data);
             if (table_data != 'Station') {
               getChart(table_data);
             } 
@@ -176,20 +175,17 @@ $(document).ready(function() {
                   station: table_data
                 },
                 function (response) {
-                  console.log('This is the chart data: '+ response);
                   $.getScript("static/js/charts.js", function(){
                     $("#barchart_depth").empty();
                     $("#barchart_density").empty();
                     barchart_depth(response);
                     barchart_density(response);
-                    console.log("latlng", response[0]['lat'], response[0]['lng'], response);
                     if (hover_markers.length != 0) {
                       hover_markers[0].setMap(null);
                     }
                     hover_markers=[];
                     var hover_marker = ('static/img/white-google-map-pin-md.png');
                     var hover_coordinate = new google.maps.LatLng(response[0]['lat'],response[0]['lng']);
-                    console.log("Hover coordinates: " + hover_coordinate);
                     marker = new google.maps.Marker ({
                       map: map,
                       position: hover_coordinate,
@@ -211,7 +207,7 @@ $(document).ready(function() {
   // ---------- End of main functionality: create location based snow report 
 });
 
-// ---------- End location based snow report
+// ---------- End map initialization
 
 // ---------- Map clearing function
 
@@ -219,11 +215,10 @@ function clearAllMap(map) {
   if (positions.length !=0) {
     for (var i = 0; i < positions.length; i++) {
       positions[i].setMap(null)
-      console.log("Positions: " + positions[i])
     }
     positions = [];
     } else {
-      console.log("hi Piera");
+      console.log("Nothing to clear");
     }
   if (hover_markers.length != 0) {
     hover_markers[0].setMap(null);

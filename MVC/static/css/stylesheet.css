@@ -3,15 +3,15 @@ body {
     margin: 10px;
     font-family: 'Roboto';
     padding-top: 65px;
-    /*background: url('/static/img/IMG_0706.JPG') no-repeat center center fixed; 
-    background-size:100%;*/
+
 }
+
 
 h2#logo-script {
     margin-top: 15px;
     margin-bottom: 10px;
     font-size: 35px;
-    font-family: 'Pacifico', Helvetica, sans-serif; 
+    font-family: 'Pacifico', Helvetica, sans-serif;
 }
 
 .navbar-form .form-control {
@@ -28,9 +28,30 @@ form#address-form {
     border-color: #0D47A1;
 }
 
-
 #address {
     width: 30%;
+}
+
+div #home-div {
+    color: #FFFFFF;
+    padding-top: 100px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 100px;
+    vertical-align: middle;
+    margin-left: 0px;
+    height: 495px;
+    background-color: rgba(23,23,23, 0.6);
+    border-radius: 50%;
+}
+
+.home-list {
+    font-family: 'Open Sans', Helvetica, sans-serif;
+
+}    
+
+.tall{
+    height: 100px;
 }
 
 div #map-gradient-key {
@@ -44,13 +65,6 @@ div #map-gradient-key {
     background: -ms-linear-gradient(left,  #00e1ff 0%,#0000ff 42%,#e10000 100%); /* IE10+ */
     background: linear-gradient(to right,  #00e1ff 0%,#0000ff 42%,#e10000 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00e1ff', endColorstr='#e10000',GradientType=1 ); /* IE6-9 */
-
-}
-
-
-div #welcome-text {
-    /*padding:150px;*/
-    background: rgba(195, 195, 195, 0.8);
 }
 
 #map-canvas {
@@ -79,6 +93,7 @@ div #welcome-text {
 {
     margin-top: 30px;
 }
+
 /*styles for d3 charts*/
 
 .xAxis path, .xAxis line, .yAxis path, .yAxis line{
@@ -90,11 +105,6 @@ div #welcome-text {
 .bar {
     fill: #2196F3;
 }
-
-/*#linechart path {
-    stroke-width: 2px;
-    fill: none;
-}*/
 
 path {
     stroke: blue;

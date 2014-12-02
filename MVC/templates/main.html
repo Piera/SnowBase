@@ -6,10 +6,9 @@
         <title>Snowbase</title>
         <link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
         <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/stylesheet.css') }}"> 
-        <!-- <link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
-        <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'> -->
 
     </head>
 
@@ -25,32 +24,43 @@
                     <!-- <input type="button" class="btn btn-primary" value="See All" id="see_all"> -->
                 </div>
             </form>
-
-        <!-- <div class="container"> -->
             <p class="navbar-text navbar-right"><h2 id="logo-script">&#x2744; Snowbase</h2></p>
-        <!-- </div> -->
+            
         </nav>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div id="map-canvas"></div>
-                <div id="map-gradient-key"> Less snow</div>
-            </div> 
-            <div class="col-md-6">
-                <p class="bg-success" id="time-stamp"></p>
-                <table class="table table-hover" id="stations_data"></table>
-                <p class="bg-info" id="text-info"></p>
+            <div class="row">
+                <div class="col-md-12 tall" id="home-row"></div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div id="barchart_density" class="chart"></div>
-            </div> 
-            <div class="col-md-6">
-                <div id="barchart_depth" class="chart"></div>
+            <div class="row">
+                <div class="col-md-6" id="left-column">
+                    <div id="map-canvas"></div>
+                    <div id="map-gradient-key"> Less snow</div>
+                </div> 
+                <div class="col-md-6" id="right-column">
+                    <div id="home-div" class="home">
+                        <p><center><h2>Welcome to Snowbase</h2></center><p>
+                        <br>
+                        <ul class="home-list"><h4><li>Up to date backcountry snow pack conditions for the western United States and Alaska.</li><p></p>
+                        <li>Text alerts for new snow: easy-to-use alerts available for over 860 SnoTel mountain station locations.</li></ul></h4>
+                        <br>
+                        <p><center><h3>Enter location to get started.</h3></center></p><center>
+                        <br>
+                    </div>
+                    <p class="bg-success" id="time-stamp"></p>
+                    <table class="table table-hover" id="stations_data"></table>
+                    <p class="bg-info" id="text-info"></p>
+                </div>
             </div>
-        </div>
+
+            <div class="row" id="bottom-row">
+                <div class="col-md-6">
+                    <div id="barchart_density" class="chart"></div>
+                </div> 
+                <div class="col-md-6">
+                    <div id="barchart_depth" class="chart"></div>
+                </div>
+            </div>
 
         <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>

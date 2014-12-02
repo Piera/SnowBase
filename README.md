@@ -26,7 +26,7 @@ The SNOTEL system is a system of backcountry snow telemetry stations maintained 
 <li>d3</li>
 <li>Bootstrap</li>
 <li>HTML/CSS</li>
-<li>Powderlin.es SNOTEL API</li>
+<li>[Powderlin.es](http://powderlin.es/api.html) SNOTEL API</li>
 <li>Google Maps API</li>
 <li>Twilio API</li></ul>
 
@@ -34,23 +34,23 @@ The SNOTEL system is a system of backcountry snow telemetry stations maintained 
 
 <strong>Data:</strong> 
 
-While the Powderlin.es API provides a robust service, the underlying mechanical system of SNOTEL stations can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server.  Using an SQLite database to store data points ensures that users will not be exposed to delays, and will always find data for their desired locations.  Filtering the data sets for minimally viable data points, and handling cases of non or partially reporting stations was another important consideration.  Determining the minimally viable data point / data set is yet another - this is a judgement that will evolve with further familiarity with the SNOTEL system, and with user feedback.  QA on data points is currently conducted by comparing data on the SNOTEL site to chart and graph values on SnowBase.
+While the Powderlin.es API provides a robust service, the underlying mechanical system of the SNOTEL stations and system can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server To shield the user from delays, and so that data is always available, I used an SQLite database to store data points.  To account for missing data points, I determined a minimally viable dataset and filtered out non-viable data points and data sets. QA on data points is currently conducted by comparing data on the SNOTEL site to chart and graph values on SnowBase. I anticipate that the minimally viable set of data will evolve with user feedback.
 
 ![ Missing data ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Missing_data.png) 
 
 <strong>Search Performance:</strong> 
 
-SnowBase takes user input and uses Google Maps geocoding, and the haversine formula to calculate the 10 closest stations in the database, returning the latest snow telemetry data for each.  This query is a classic example of a "Nearest Neighbor Search" problem.  The approach I took was to use geographical partitions to bucket the stations; so that only a subset of data is queried with each input.  I used a benchmark location input to keep track of algorithm performance, and improved the search speed by approximately 2 seconds from the original brute-force linear algorithm.  I am interested in furthering the geo partitioning algorithm and/or exploring other algorithmic solutions before upgrading the database.
+SnowBase takes user input and uses Google Maps geocoding, and the haversine formula to calculate the 10 closest stations in the database, returning the latest snow telemetry data for each.  This query is a classic example of a "Nearest Neighbor Search" problem.  My solution approach is to use geographical partitions to bucket the stations; only a subset of data is queried with each input.  I used a benchmark location input to keep track of algorithm performance, and improved the search speed by approximately 2 seconds from the original brute-force linear algorithm.  I am interested in furthering the geo partitioning algorithm and/or exploring other algorithmic solutions before upgrading the database.
 
 ![ Benchmark search ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Benchmark_search.png)  
 
 <strong>Usability:</strong> 
 
-Existing SnoTel representations require users to zoom, scroll, and click excessivly to find the data for a given SNOTEL station.  Currently, there is no way to compare data from any two SnoTel stations.  For this project, I made a "one click" commitment to the end user. Data is easily accessed and compared; I used jQuery and d3 to effortlessly render trending data on when the user hovers on the data chart.  I also included a heatmap layer, gradient key, and marker indicators on the map, so that users can quickly identify where the deepest snow is. 
+Existing SnoTel representations require users to zoom, scroll, and click excessivly to find the data for a given SNOTEL station.  Currently, there is no way to compare data from any two SnoTel stations.  For this project, I made a "one click" commitment to the end user. Data is easily accessed and compared; I used jQuery and d3 to effortlessly render trending data as the user hovers on the data chart.  I also included a heatmap layer, gradient key, and marker indicators on the map, so that users can visually identify where the deepest snow is. 
 
 ![ Comparison chart ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Comparison_chart.png)  
 
-The simplicity of the text alert system also reflects the "one click" commitment; having users log in to set or manage text messages felt too heavy handed for the simple task of setting up an alert.  Instead, users text a code to the SnowBase phone number and the alert is set via the Twilio API. After the initial text receipt, the user receives a single text alert when there is new snow at the station same text are instructions for how to reset the alert.  Users can effectively manage their alerts from their phone without visiting SnowBase.  This light solution employs a simple data table and Boolean toggle system.
+The simplicity of the text alert system also reflects the "one click" commitment; having users log in to set or manage text messages felt to heavy for the simple task of setting an alert.  Instead, users just text a code to the SnowBase phone number and the alert is set via the Twilio API. After the initial text receipt, the user receives a single text alert when there is new snow at the station and in the same text are instructions for how to reset the alert.  Users can effectively manage their alerts from their phone without visiting SnowBase.  This light solution employs a simple data table and Boolean toggle system.
 
 ![ Text Alert ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Text_alert.jpg)  
 
@@ -60,22 +60,25 @@ The simplicity of the text alert system also reflects the "one click" commitment
 To run SnowBase:
 <ul><li>Clone repository</li>
 <li>From within MVC directory:</li>
-<li>```pip install -r requirements.txt```</li>
-<li>```source env/bin/activate```</li>
-<li>```python finder.py```</li></ul>
+`pip install -r requirements.txt`
+`source env/bin/activate`
+`python finder.py`
 
 To update or add data points at any time:
-<ul><li>Update add.py with current file location of the url file, then:</li>
+<ul><li>Update add.py with current file location of the APIurls.csv file, then:</li>
 <li> `python add.py` </li></ul>
 
-To enable the Twilio text alert functionality:
-<ol><li> Sign up for a Twilio account</li>
-<li>Save account keys</li>
-<li>In MVC directory, download and unzip ngrok</li>
-<li>```source env/bin/activate```</li>
-<li>```python finder.py```</li>
-<li>```./ngrok 5000```</li>
-<li>Update Twilio with the ngrok URL/alerts</li>
+To fully enable the Twilio text alert functionality:
+<ol><li> Sign up for a Twilio account at [Twilio](http://www.Twilio.com)</li>
+<li>Save your account keys in the "activate" file in the MCV/env/bin directory:</li>
+`export TWILIO_ACCOUNT_SID=YOUR_ACCOUNT_SID`
+`export TWILIO_AUTH_TOKEN=YOUR_AUTH_TOKEN`
+`export TWILIO_NUMBER=+1XXXXXXXXXXX`
+<li>In MVC directory, download and unzip from [ngrok](http://www.ngrok.com)</li>
+`source env/bin/activate`
+`python finder.py`
+`./ngrok 5000`
+<li>Update Twilio number settings for SMS with the ngrok URL/alerts</li>
 <li>Text codes to your new Twilio number</li>
 <li>Alerts are distributed with each run of Add.py</li>
 <li>Or, run scan.py to trigger alerts separately</li></ol>

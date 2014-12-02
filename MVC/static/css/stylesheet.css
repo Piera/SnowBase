@@ -54,6 +54,11 @@ div #home-div {
     height: 100px;
 }
 
+div #right-column {
+    min-width: 625px;
+
+}
+
 div #map-gradient-key {
     padding: 5px;
     width: 670px;

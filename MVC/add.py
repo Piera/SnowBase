@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import json
 import csv
-import ast # Converts "True" and "False" to boolean values
 import urllib2
 import model
 from model import Station, Snow_Data

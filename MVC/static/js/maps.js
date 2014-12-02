@@ -26,7 +26,7 @@ $(document).ready(function() {
 
     $.get(
       "/see_all", {
-        button: 1
+        see_all: 1
       },
       function (response) {
         var all_map = [];
@@ -108,7 +108,9 @@ $(document).ready(function() {
               icon: image,
               animation: google.maps.Animation.DROP,
               title: (response['closest'][i]['name'] + ", " + "Snow depth: " + response['closest'][i]['depth'] + " in."),
-              info: ("<i class='glyphicon glyphicon-phone'></i>&nbsp;&nbsp;Get a text alert when<br>" + response['closest'][i]['name'] + " station<br>receives new snow!<br><strong>Text " + response['closest'][i]['text-code'] + " to (510) 447-1579</strong>")
+              info: ("<i class='glyphicon glyphicon-phone'></i>&nbsp;&nbsp;Get a text alert when<br>" 
+                + response['closest'][i]['name'] + " station<br>receives new snow!<br><strong>Text " 
+                + response['closest'][i]['text-code'] + " to (510) 447-1579</strong>")
             });
             google.maps.event.addListener(marker, 'click', function() {
               infowindow.setContent(this.info);
@@ -146,7 +148,8 @@ $(document).ready(function() {
           $('#time-stamp').append("  Last update: " + response['time_stamp'] + " UTC -8:00 (PST)").addClass("padded-info")
           var table_headers = "<thead><tr class = 'snow_data' id='snow_data_table'><td class='column_header' id='stations'><center><strong>Station</center></strong></td><td class='column header' id='text code'><center><span class='glyphicon glyphicon-phone'></span></center></td><td class='column_header' id='distances'><center><strong>Distance</center></strong></td><td class='column_header' id='elevations'><center><strong>Elevation</center></strong></td><td class='column_header' id='depths'><center><strong>Snow Depth</center></strong></td><td class='column_header' id='Snow Density'><center><strong>Snow Density</strong></center></td></tr><thead>"
           $('#stations_data').append(table_headers)
-          $('#text-info').append("<center>Text any station code to (510) 447-1579 to receive a text alert when there is new snow!</center>").addClass("padded-info")
+          $('#text-info').append("<center><span class='glyphicon glyphicon-phone'></span> Text any <span class='badge'>station code</span> to (510) 447-1579 to receive a text alert when there is new snow!</center>")
+            .addClass("padded-info")
           for (var i = 0; i < response['closest'].length; i++) {
             var density;
             if (response['closest'][i]['density'] === "No Data") {
@@ -154,7 +157,12 @@ $(document).ready(function() {
             } else {
               density = (response['closest'][i]['density'] + "%");
           }
-          $('#stations_data').append("<tr><td>" + response['closest'][i]['name'] + "</td><td><center><span class='badge'>" + response['closest'][i]['text-code'] + "</span></center></td><td><center>" + response['closest'][i]['dist'] + " mi. </center></td><td><center>" + response['closest'][i]['ele'] + " ft. </center></td><td><center>" + response['closest'][i]['depth'] + " in. </center></td><td><center>" + density + "</center></td></tr>");
+          $('#stations_data').append("<tr><td>" + response['closest'][i]['name'] + "</td><td><center><span class='badge'>"
+            + response['closest'][i]['text-code'] + "</span></center></td><td><center>" 
+            + response['closest'][i]['dist'] + " mi. </center></td><td><center>" 
+            + response['closest'][i]['ele'] + " ft. </center></td><td><center>" 
+            + response['closest'][i]['depth'] + " in. </center></td><td><center>" 
+            + density + "</center></td></tr>");
           
           // --------- End remove home page & draw report elements
           

@@ -58,27 +58,27 @@ The simplicity of the text alert system also reflects the "one click" commitment
 <h2>Instructions:</h2>
 
 To run SnowBase:
-1. Clone repository
-2. From within MVC directory:
-* `pip install -r requirements.txt`
-* `source env/bin/activate`
-* `python finder.py`
+<ul><li>Clone repository</li>
+<li>From within MVC directory:</li>
+<li> `pip install -r requirements.txt`</li>
+<li> `source env/bin/activate`</li>
+<li> `python finder.py` </li></ul>
 
 To update or add data points at any time:
-* Update add.py with current file location of the url file, then:
-* `python add.py`
+<ul><li>Update add.py with current file location of the url file, then:</li>
+<li> `python add.py` </li></ul>
 
 To enable the Twilio text alert functionality:
-1. Sign up for a Twilio account
-2. Save account keys
-3. In MVC directory, download and unzip ngrok
-4. `source env/bin/activate`
-5. `python finder.py`
-6. `./ngrok 5000`
-7. Update Twilio with the ngrok URL/alerts
-8. Text codes to your new Twilio number
-9. Alerts are distributed with each run of Add.py
-10. Or, run scan.py to trigger alerts separately
+<ol><li> Sign up for a Twilio account</li>
+<li>2. Save account keys</li>
+<li>3. In MVC directory, download and unzip ngrok</li>
+<li>4. `source env/bin/activate`</li>
+<li>5. `python finder.py`</li>
+<li>6. `./ngrok 5000`</li>
+<li>7. Update Twilio with the ngrok URL/alerts</li>
+<li>8. Text codes to your new Twilio number</li>
+<li>9. Alerts are distributed with each run of Add.py</li>
+<li>10. Or, run scan.py to trigger alerts separately</li></ol>
 
 <p></p>
 <h2>File Directory:</h2>

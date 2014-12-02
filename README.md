@@ -12,7 +12,7 @@ Fall 2014 Hackbright Final Project: SnowBase
 
 <p></p>
 <h2>About SNOTEL:</h2>
-<img align="left" alt = "Snotel Station" src="https://raw.githubusercontent.com/Piera/Project/Station_photo.jpg"> The SNOTEL system is a system of backcountry snow telemetry stations maintained by the USDA for the purposes of monitoring water resources.  There are 867 reporting stations located in the western United States, including Alaska.  
+<img align="left"  style = "padding: 20px" alt = "Snotel Station" src="https://raw.githubusercontent.com/Piera/Project/MVC/Station_photo.jpg"> The SNOTEL system is a system of backcountry snow telemetry stations maintained by the USDA for the purposes of monitoring water resources.  There are 867 reporting stations located in the western United States, including Alaska.  
 
 <p></p>
 <h2>Technologies:</h2>
@@ -35,7 +35,7 @@ Fall 2014 Hackbright Final Project: SnowBase
 <strong>Data:</strong> 
 
 
-<img align="left" padding = "20px" alt = "Missing data" src="https://raw.githubusercontent.com/Piera/Project/master/MVC/Missing_data.png">While the Powderlin.es API provides a robust service, the underlying mechanical system of SnoTel stations can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server.  Using an SQLite database to store data points ensures that users will not be exposed to delays, and will always find data for their desired locations.  Filtering the data sets for minimally viable data points, and handling cases of non or partially reporting stations was another important consideration.  Determining the minimally viable data point / data set is yet another - this is a judgement that will evolve with further familiarity with the SnoTel system, and with user feedback.  QA on data points is currently conducted by comparing data on the SnoTel site to chart and graph values on SnowBase.
+<img align="left" style = "padding: 20px" alt = "Missing data" src="https://raw.githubusercontent.com/Piera/Project/master/MVC/Missing_data.png">While the Powderlin.es API provides a robust service, the underlying mechanical system of SnoTel stations can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server.  Using an SQLite database to store data points ensures that users will not be exposed to delays, and will always find data for their desired locations.  Filtering the data sets for minimally viable data points, and handling cases of non or partially reporting stations was another important consideration.  Determining the minimally viable data point / data set is yet another - this is a judgement that will evolve with further familiarity with the SnoTel system, and with user feedback.  QA on data points is currently conducted by comparing data on the SnoTel site to chart and graph values on SnowBase.
 
 <strong>Search Performance:</strong> 
 
@@ -59,8 +59,8 @@ The simplicity of the text alert system also reflects the "one click" commitment
 <li>source env/bin/activate</li>
 <li>python finder.py</li></ul>
 3. To update or add data points at any time:
-Update add.py with current file location of the url file</li>
-python add.py</li>
+<ul><li>Update add.py with current file location of the url file</li>
+<li>python add.py</li>
 4. To enable the alert functionality:
 <ul><li>Sign up for a Twilio account</li>
 <li>Save account keys</li> 

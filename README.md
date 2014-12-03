@@ -56,29 +56,29 @@ The simplicity of the text alert system also reflects the "one click" commitment
 
 ![ Text Alert ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Text_alert.jpg)  
 
-<p><p>
+<p></p>
 <h2>Instructions:</h2>
 
 To run SnowBase:
-<ul><li>Clone repository</li>
-<li>From within MVC directory:</li>
-<code>pip install -r requirements.txt`
-<code>source env/bin/activate`
-<code>python finder.py`
-
-To update or add data points at any time:
-<ul><li>Update add.py with current file location of the APIurls.csv file, then:</li></ul>
-<code>python add.py`</code>
-
+<ol><li>Clone repository</li>
+<li>From within MVC directory:</li></ol>
+<code>pip install -r requirements.txt</code><br>
+<code>source env/bin/activate</code><br>
+<code>python finder.py</code>
+<br><br>
+To update or add data points at any time:<br>
+<ol><li>Update add.py with current file location of the APIurls.csv file, then:</li></ol>
+<code>python add.py</code>
+<br><br>
 To fully enable the Twilio text alert functionality:
-<ol><li> Sign up for a Twilio account at <a href="http://www.Twilio.com">Twilio</a></li>
+<ol><li>Sign up for a Twilio account at <a href="http://www.Twilio.com">Twilio</a></li>
 <li>Save your account keys in the "activate" file in the MCV/env/bin directory:</li>
 <code>export TWILIO_ACCOUNT_SID=YOUR_ACCOUNT_SID</code><br>
 <code>export TWILIO_AUTH_TOKEN=YOUR_AUTH_TOKEN</code><br>
 <code>export TWILIO_NUMBER=+1XXXXXXXXXXX</code>
 <li>In MVC directory, download and unzip from <a href="http://www.ngrok.com">ngrok</a></li>
-<code>source env/bin/activate</code>
-<code>python finder.py</code>
+<code>source env/bin/activate</code><br>
+<code>python finder.py</code><br>
 <code>./ngrok 5000</code>
 <li>Update Twilio number settings for SMS with the ngrok URL/alerts</li>
 <li>Text codes to your new Twilio number</li>

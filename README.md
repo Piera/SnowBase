@@ -69,11 +69,11 @@ To update or add data points at any time:
 <li> `python add.py` </li></ul>
 
 To fully enable the Twilio text alert functionality:
-<ol><li> Sign up for a Twilio account at [Twilio](http://www.Twilio.com)</li>
+<ol><li> Sign up for a Twilio account at <a href="http://www.Twilio.com">Twilio</a></li>
 <li>Save your account keys in the "activate" file in the MCV/env/bin directory:</li>
-`export TWILIO_ACCOUNT_SID=YOUR_ACCOUNT_SID`
-`export TWILIO_AUTH_TOKEN=YOUR_AUTH_TOKEN`
-`export TWILIO_NUMBER=+1XXXXXXXXXXX`
+<code>export TWILIO_ACCOUNT_SID=YOUR_ACCOUNT_SID</code>
+<code>export TWILIO_AUTH_TOKEN=YOUR_AUTH_TOKEN</code>
+<code>export TWILIO_NUMBER=+1XXXXXXXXXXX</code>
 <li>In MVC directory, download and unzip from [ngrok](http://www.ngrok.com)</li>
 `source env/bin/activate`
 `python finder.py`

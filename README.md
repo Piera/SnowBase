@@ -26,7 +26,7 @@ The SNOTEL system is a system of backcountry snow telemetry stations maintained 
 <li>d3</li>
 <li>Bootstrap</li>
 <li>HTML/CSS</li>
-<li>[Powderlin.es](http://powderlin.es/api.html) SNOTEL API</li>
+<li><a href=http://powderlin.es/api.html>Powederlin.es</a> SNOTEL API</li>
 <li>Google Maps API</li>
 <li>Twilio API</li></ul>
 
@@ -34,7 +34,9 @@ The SNOTEL system is a system of backcountry snow telemetry stations maintained 
 
 <strong>Data:</strong> 
 
-While the Powderlin.es API provides a robust service, the underlying mechanical system of the SNOTEL stations and system can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server To shield the user from delays, and so that data is always available, I used an SQLite database to store data points.  To account for missing data points, I determined a minimally viable dataset and filtered out non-viable data points and data sets. QA on data points is currently conducted by comparing data on the SNOTEL site to chart and graph values on SnowBase. I anticipate that the minimally viable set of data will evolve with user feedback.
+While the Powderlin.es API provides a robust service, the underlying mechanical system of the SNOTEL stations and system can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server. To shield the user from delays, and so that data is always available, I used an SQLite database to store data points that are collected daily.  
+
+To account for missing data points, I determined a minimally viable dataset and filtered out non-viable data points and data sets. QA on data points is currently conducted by comparing data on the SNOTEL site to chart and graph values on SnowBase. I anticipate that the minimally viable set of data will evolve with user feedback.
 
 ![ Missing data ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Missing_data.png) 
 
@@ -46,7 +48,7 @@ SnowBase takes user input and uses Google Maps geocoding, and the haversine form
 
 <strong>Usability:</strong> 
 
-Existing SnoTel representations require users to zoom, scroll, and click excessivly to find the data for a given SNOTEL station.  Currently, there is no way to compare data from any two SnoTel stations.  For this project, I made a "one click" commitment to the end user. Data is easily accessed and compared; I used jQuery and d3 to effortlessly render trending data as the user hovers on the data chart.  I also included a heatmap layer, gradient key, and marker indicators on the map, so that users can visually identify where the deepest snow is. 
+Existing SnoTel representations require users to zoom, scroll, and click to find the data for a given SNOTEL station; there is nno way to compare data from any two SNOTEL stations.  For this project, I made a "one click" commitment to the end user. Data is instantly accessed and compared; I used jQuery and d3 to effortlessly render trending data as the user hovers on the data chart.  I also included a heatmap layer, gradient key, and marker indicators on the map, so that users can visually identify where the deepest snow is. 
 
 ![ Comparison chart ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Comparison_chart.png)  
 
@@ -60,24 +62,24 @@ The simplicity of the text alert system also reflects the "one click" commitment
 To run SnowBase:
 <ul><li>Clone repository</li>
 <li>From within MVC directory:</li>
-`pip install -r requirements.txt`
-`source env/bin/activate`
-`python finder.py`
+<code>pip install -r requirements.txt`
+<code>source env/bin/activate`
+<code>python finder.py`
 
 To update or add data points at any time:
-<ul><li>Update add.py with current file location of the APIurls.csv file, then:</li>
-<li> `python add.py` </li></ul>
+<ul><li>Update add.py with current file location of the APIurls.csv file, then:</li></ul>
+<code>python add.py`</code>
 
 To fully enable the Twilio text alert functionality:
 <ol><li> Sign up for a Twilio account at <a href="http://www.Twilio.com">Twilio</a></li>
 <li>Save your account keys in the "activate" file in the MCV/env/bin directory:</li>
-<code>export TWILIO_ACCOUNT_SID=YOUR_ACCOUNT_SID</code>
-<code>export TWILIO_AUTH_TOKEN=YOUR_AUTH_TOKEN</code>
+<code>export TWILIO_ACCOUNT_SID=YOUR_ACCOUNT_SID</code><br>
+<code>export TWILIO_AUTH_TOKEN=YOUR_AUTH_TOKEN</code><br>
 <code>export TWILIO_NUMBER=+1XXXXXXXXXXX</code>
-<li>In MVC directory, download and unzip from [ngrok](http://www.ngrok.com)</li>
-`source env/bin/activate`
-`python finder.py`
-`./ngrok 5000`
+<li>In MVC directory, download and unzip from <a href="http://www.ngrok.com">ngrok</a></li>
+<code>source env/bin/activate</code>
+<code>python finder.py</code>
+<code>./ngrok 5000</code>
 <li>Update Twilio number settings for SMS with the ngrok URL/alerts</li>
 <li>Text codes to your new Twilio number</li>
 <li>Alerts are distributed with each run of Add.py</li>

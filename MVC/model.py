@@ -1,10 +1,11 @@
+import os
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 from sqlalchemy import create_engine, Column, ForeignKey, Float, Integer, String, DateTime, Boolean
 
 # ENGINE = create_engine("sqlite:///Snow.db", echo = False)
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql:///localhost")
-ENGINE = create_engine("DATABASE_URL", echo = False)
+# DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql:///pieradamonte')
+ENGINE = create_engine('postgres://yexubhlnrkltjf:m5Y7o_LrRhXbmICExik5T0h58n@ec2-54-163-250-41.compute-1.amazonaws.com:5432/dcaimr2v2lrql3', echo = False)
 session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
 Base = declarative_base()
 
@@ -50,7 +51,7 @@ def add_data():
     global Session
 
     # ENGINE = create_engine("sqlite:///Snow.db", echo = True)
-    ENGINE = create_engine("DATABASE_URL", echo = False)
+    ENGINE = create_engine('postgres://yexubhlnrkltjf:m5Y7o_LrRhXbmICExik5T0h58n@ec2-54-163-250-41.compute-1.amazonaws.com:5432/dcaimr2v2lrql3', echo = False)
     Session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
 
     session = Session()
@@ -61,7 +62,7 @@ def create_tables():
     global Session
 
     # ENGINE = create_engine("sqlite:///Snow.db", echo = True)
-    ENGINE = create_engine("DATABASE_URL", echo = False)
+    ENGINE = create_engine('postgres://yexubhlnrkltjf:m5Y7o_LrRhXbmICExik5T0h58n@ec2-54-163-250-41.compute-1.amazonaws.com:5432/dcaimr2v2lrql3', echo = False)
     Session = sessionmaker(bind=ENGINE)
     Base.metadata.create_all(ENGINE)
 

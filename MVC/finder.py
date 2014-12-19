@@ -14,12 +14,14 @@ from model import session as dbsession
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
 TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
+# DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql:///localhost')
 
 app = Flask(__name__)
 
 # app.secret_key = SECRET_KEY
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', '378fj339802h&^*!^&^A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 app.config['SECRET_KEY'] = SECRET_KEY
+# app.config['SQLALCHEMY_DATABASE_URL'] = DATABASE_URL
 
 @app.route("/")
 def index():

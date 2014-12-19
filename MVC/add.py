@@ -31,7 +31,8 @@ def load_snow_data(session):
 					# If there is snow depth data, proceed with data addition or update
 					triplet = snow_data['station_information']['triplet']
 					station_id = session.query(model.Station).filter_by(given_id=triplet).one()
-					entries = session.query(model.Snow_Data).filter_by(station_id=station_id.id).all()
+					entries = session.query(model.Snow_Data).filter_by(station_id=station_id.id).order_by(model.Snow_Data.date).all()
+					# entries = session.query(model.Snow_Data).filter_by(station_id=station_id.id).all()
 					print entries
 
 					# What if there are no snow data entries for the station? Create a new one.
@@ -67,9 +68,10 @@ def load_snow_data(session):
 						print "Adding telemetry data, inside the EXCEPT."
 
 					# Otherwise: Compare the dates; if date is the same, update the database
-					elif entries:
+					elif entries and datetime.date(entries[-1].date) == datetime.date(datetime.now()):
+						print datetime.date(entries[-1].date)
 						last_entry = entries[-1]
-						datetime.date(last_entry.date) == datetime.date(datetime.now())
+						# datetime.date(last_entry.date) == datetime.date(datetime.now())
 						# last_entry = entries[-1]
 						print "Dates are same: update data"
 						last_entry.source = 'SNOTEL'
@@ -96,7 +98,8 @@ def load_snow_data(session):
 
 					# If the dates are different, then create a new entry in the database
 					else:
-						print "ELSE"
+						print "Dates are different, adding a datapoint"
+						print datetime.date(entries[-1].date)
 						source = 'SNOTEL'
 						units = 'in'
 						date = datetime.now()
@@ -124,11 +127,8 @@ def load_snow_data(session):
 						if water_equiv_change != None:
 							telemetry_data.water_equiv_change = water_equiv_change
 						session.add(telemetry_data)
-						print "Adding telemetry data, outside of exception."
-				else:
-					continue
-			else:
-				continue
+						print "Adding telemetry data, inside the else."
+						session.add(telemetry_data)
 		session.commit()
 		print "COMMIT at end of parsing and everything"
 

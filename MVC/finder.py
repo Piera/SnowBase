@@ -1,6 +1,7 @@
 import os
 import json
 import model
+import psycopg2
 from alerts import load_alert
 import operator
 from twilio.rest import TwilioRestClient
@@ -18,10 +19,8 @@ TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
 
 app = Flask(__name__)
 
-# app.secret_key = SECRET_KEY
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', '378fj339802h&^*!^&^A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 app.config['SECRET_KEY'] = SECRET_KEY
-# app.config['SQLALCHEMY_DATABASE_URL'] = DATABASE_URL
 
 @app.route("/")
 def index():

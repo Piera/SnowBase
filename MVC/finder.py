@@ -123,14 +123,17 @@ def charts():
 	
 @app.route("/alert", methods = ['GET','POST'])
 def alert():
+	print request.values
 	from_number = request.values.get('From')
 	station = request.values.get('Body')
 	client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 	number_to_text = from_number
-	station_alert = dbsession.query(model.Station).get(station)
+
 	try:
-		if int(station) > 0 and int(station) < 868:
+		station = int(station)
+		if station > 0 and station < 868:
 	# Send confirmation message and send alert info to alerts table:
+			station_alert = dbsession.query(model.Station).get(station)
 			alert_text = "You set an alert for station: %s!  We'll let you know when that station registers new snow!" % (station_alert.name)
 			message = client.messages.create(from_=TWILIO_NUMBER,
 										to=number_to_text,
@@ -142,12 +145,13 @@ def alert():
 			message = client.messages.create(from_=TWILIO_NUMBER,
 										to=number_to_text,
 										body=error_text)
-	except:
-		error_text = "%s is an invalid station number, please try again!" % (station)
+	
+	except ValueError: 
+		error_text = "%s is an invalid entry, please use station code!" % (station)
 		message = client.messages.create(from_=TWILIO_NUMBER,
 										to=number_to_text,
 										body=error_text)
 	return "Alert sent"
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = False)

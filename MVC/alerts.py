@@ -12,16 +12,17 @@ TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
 
 def load_alert(from_number, station):
 	alert = None
-	station_id = model.session.query(model.Station).filter_by(id=station).one()
+	# station_id = model.session.query(model.Station).filter_by(id=station).one()
+	# print station_id.id
 	alert = model.Alert(\
 		phone_number = from_number,\
-		station_id = station_id.id,\
-		status = 1)
-	print alert
+		station_id = station,\
+		status = True
+		)
 	model.session.add(alert)
 	model.session.commit()
 
 def update_alert(alert_id, alert_status):
 	alert = model.session.query(model.Alert).filter_by(id=alert_id)
-	alert[0].status=0
+	alert[0].status=False
 	model.session.commit()

@@ -2,7 +2,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 from sqlalchemy import create_engine, Column, ForeignKey, Float, Integer, String, DateTime, Boolean
 
-ENGINE = create_engine("sqlite:///Snow.db", echo = False)
+# ENGINE = create_engine("sqlite:///Snow.db", echo = False)
+ENGINE = create_engine("postgresql://localhost", echo = False)
 session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
 Base = declarative_base()
 
@@ -47,7 +48,8 @@ def add_data():
     global ENGINE
     global Session
 
-    ENGINE = create_engine("sqlite:///Snow.db", echo = True)
+    # ENGINE = create_engine("sqlite:///Snow.db", echo = True)
+    ENGINE = create_engine("postgresql://localhost", echo = False)
     Session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False)) 
 
     session = Session()
@@ -57,7 +59,8 @@ def create_tables():
     global ENGINE
     global Session
 
-    ENGINE = create_engine("sqlite:///Snow.db", echo = True)
+    # ENGINE = create_engine("sqlite:///Snow.db", echo = True)
+    ENGINE = create_engine("postgresql://localhost", echo = False)
     Session = sessionmaker(bind=ENGINE)
     Base.metadata.create_all(ENGINE)
 

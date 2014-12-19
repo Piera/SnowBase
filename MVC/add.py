@@ -31,7 +31,7 @@ def load_snow_data(session):
 				if snow_data['data'][0]['Snow Depth (in)'] != None:
 					# If there is snow depth data, proceed with data addition or update
 					triplet = snow_data['station_information']['triplet']
-					station_id = session.query(model.Station).filter_by(given_id=triplet).one()
+					station_id = session.query(model.Station).filter_by(given_id=triplet).all()
 					entries = session.query(model.Snow_Data).filter_by(station_id=station_id.id).order_by(model.Snow_Data.date).all()
 					# entries = session.query(model.Snow_Data).filter_by(station_id=station_id.id).all()
 					print entries

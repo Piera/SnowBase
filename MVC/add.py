@@ -13,7 +13,8 @@ def load_snow_data(session):
 	print "Session!"
 	telemetry_data = None
 # 1. Open the list of URLs for the API calls, iterate the API calls
-	with open('/Users/pieradamonte/Dropbox/Hackbright/HBProject/Cron/APIurls.csv', 'rb') as csvfile:
+	# with open('/Users/pieradamonte/Dropbox/Hackbright/HBProject/Cron/APIurls.csv', 'rb') as csvfile:
+	with open('/Cron/APIurls.csv', 'rb') as csvfile:
 		print "CSV Opened!!"
 		snow_reader = csv.reader(csvfile)
 		for row in snow_reader:

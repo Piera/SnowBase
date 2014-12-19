@@ -17,7 +17,7 @@ TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
 
 app = Flask(__name__)
 
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+app.secret_key = os.environ.get('SECRET_KEY', '378fj339802h&^*!^&^A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 
 @app.route("/")
 def index():

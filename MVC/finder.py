@@ -18,8 +18,7 @@ TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
 app = Flask(__name__)
 
 # app.secret_key = SECRET_KEY
-SECRET_KEY = os.environ.get('SECRET_KEY', '378fj339802h&^*!^&^A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
-
+SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', '378fj339802h&^*!^&^A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 app.config['SECRET_KEY'] = SECRET_KEY
 
 @app.route("/")

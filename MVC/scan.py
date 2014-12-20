@@ -16,7 +16,8 @@ def alert_scan(session):
 	client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 	for alert in all_alerts:
 		station = alert.station_id
-		report = session.query(model.Station).get(station).all()
+		# report = session.query(model.Station).get(station).all()
+		report = session.query(model.Station).get(station)
 
 		# Check for depth data for station:
 		try:

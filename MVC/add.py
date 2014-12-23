@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import json
 import csv
 import urllib2
@@ -13,8 +14,9 @@ def load_snow_data(session):
 	print "Session!"
 	telemetry_data = None
 # 1. Open the list of URLs for the API calls, iterate the API calls
-	# with open('/Users/pieradamonte/Dropbox/Hackbright/HBProject/Cron/APIurls.csv', 'rb') as csvfile:
-	with open('Cron/APIurls.csv', 'rb') as csvfile:
+	API_URLS = os.environ.get('API_URLS')
+	with open(API_URLS, 'rb') as csvfile:
+	# with open('Cron/APIurls.csv', 'rb') as csvfile:
 		print "CSV Opened!!"
 		snow_reader = csv.reader(csvfile)
 		for row in snow_reader:
@@ -70,7 +72,8 @@ def load_snow_data(session):
 
 					# Otherwise: Compare the dates; if date is the same, update the database
 					elif entries and datetime.date(entries[-1].date) == datetime.date(datetime.now()):
-						print datetime.date(entries[-1].date)
+						print "Last entry: ", datetime.date(entries[-1].date)
+						print "Now:        ", datetime.date(datetime.now())
 						last_entry = entries[-1]
 						# datetime.date(last_entry.date) == datetime.date(datetime.now())
 						# last_entry = entries[-1]
@@ -135,7 +138,9 @@ def load_snow_data(session):
 
 def main(session):
 	load_snow_data(session)
+	print "Run alert scan"
 	alert_scan(session)
+	print "Scan complete"
     
 if __name__ == "__main__":
     s = model.add_data()

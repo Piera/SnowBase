@@ -103,7 +103,8 @@ def load_snow_data(session):
 					# If the dates are different, then create a new entry in the database
 					else:
 						print "Dates are different, adding a datapoint"
-						print datetime.date(entries[-1].date)
+						print "Last entry: ", datetime.date(entries[-1].date)
+						print "Now:        ", datetime.date(datetime.now())
 						source = 'SNOTEL'
 						units = 'in'
 						date = datetime.now()

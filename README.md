@@ -48,11 +48,11 @@ SnowBase takes user input and uses Google Maps geocoding and the haversine formu
 
 <strong>Usability:</strong> 
 
-Existing SnoTel representations require users to zoom, scroll, and click to find the data for a given SNOTEL station and there is no way to compare data between SNOTEL stations.  For this reason, I decided to make a "one click" commitment to the end user.  I included a heatmap layer, gradient key, and marker indicators on the map, so that users can visually identify where the deepest snow is.  Data is instantly accessed and compared; I used jQuery and d3 to effortlessly render trending data as the user hovers on the data chart. 
+Existing SnoTel representations require users to zoom, scroll, and click to find the data for a given SNOTEL station and there is no way to compare data between SNOTEL stations. For this reason, I committed to making the interface extremely simple for the end user. I included a heatmap layer, gradient key, and marker indicators on the map, so that users can visually identify where the deepest snow is. Data is instantly accessed and compared; I used jQuery and d3 to effortlessly render trending data as the user clicks on the data chart. 
 
 ![ Comparison chart ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Comparison_chart.png)  
 
-The simplicity of the text alert system also reflects the "one click" commitment; having users log in to set or manage text messages felt too cumbersome for the simple task of setting an alert.  Instead, users just text a code to the SnowBase phone number and the alert is set via the Twilio API. The user receives a single text alert when a station registers new snow, and in the same text are instructions for how to reset the alert.  Users can effectively manage their alerts from their phone without visiting SnowBase.  This light solution employs a data table and simple toggle.  Example text alert:
+The simplicity of the text alert system also reflects my commitment to simplicity; having users log in to set or manage text messages felt too cumbersome for the simple task of setting an alert.  Instead, users just text a code to the SnowBase phone number and the alert is set via the Twilio API. The user receives a single text alert when a station registers new snow, and in the same text are instructions for how to reset the alert.  Users can effectively manage their alerts from their phone without visiting SnowBase.  This light solution employs a data table and simple toggle.  Example text alert:
 
 ![ Text Alert ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Text_alert.jpg)  
 

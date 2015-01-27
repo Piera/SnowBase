@@ -169,7 +169,8 @@ $(document).ready(function() {
           // ---------- d3 Chart rendering and chart hover function 
 
           getChart(response['closest'][0]['name']);
-          $('#stations_data').on('hover', 'tr', function(event) {
+          // $('#stations_data').on('hover', 'tr', function(event) {
+          $('#stations_data').on('click', 'tr', function(event) {
             event.stopImmediatePropagation();
             var table_data = $('td:first', this).text();
             if (table_data != 'Station') {

@@ -54,6 +54,9 @@ div #home-div {
     height: 100px;
 }
 
+table#stations_data.table.table-hover tr { cursor: pointer; cursor: hand; 
+}
+
 div #right-column {
     min-width: 625px;
 

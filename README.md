@@ -13,11 +13,11 @@ Hackbright Final Project: SnowBase
 <p></p>
 
 <h2>NEW! SnowBase is now deployed on Heroku!</h2>
-<strong><a href=http://snowbase-project.herokuapp.com/>SnowBase</a></strong>
+Check it out: <strong><a href=http://snowbase-project.herokuapp.com/>SnowBase</a></strong>
 
 What's next?
-<ul><li>Improve responsive breakpoint</li>
-<li>Improve performance</li></ul>
+<ul><li>Improve responsive breakpoints</li>
+<li>Improve performance on Heroku</li></ul>
 
 <h2>About SNOTEL:</h2>
 The SNOTEL system is a system of backcountry snow telemetry stations maintained by the USDA for the purposes of monitoring water resources.  There are 867 reporting stations located in the western United States, including Alaska.  

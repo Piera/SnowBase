@@ -11,6 +11,14 @@ Hackbright Final Project: SnowBase
 ![ScreenShot](https://raw.githubusercontent.com/Piera/Project/master/MVC/ScreenShot.png)
 
 <p></p>
+
+<h2>NEW! SnowBase is now deployed on Heroku!</h2>
+<strong><a href=http://snowbase-project.herokuapp.com/>SnowBase</a></strong>
+
+What's next?
+<ul><li>Improve responsive breakpoint</li>
+<li>Improve performance</li></ul>
+
 <h2>About SNOTEL:</h2>
 The SNOTEL system is a system of backcountry snow telemetry stations maintained by the USDA for the purposes of monitoring water resources.  There are 867 reporting stations located in the western United States, including Alaska.  
 
@@ -57,35 +65,7 @@ The text alert system also reflects my commitment to simplicity; having users lo
 ![ Text Alert ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Text_alert.jpg)  
 
 <p></p>
-<h2>Instructions:</h2>
 
-To run SnowBase:
-<ol><li>Clone repository</li>
-<li>From within MVC directory:</li></ol>
-<code>pip install -r requirements.txt</code><br>
-<code>source env/bin/activate</code><br>
-<code>python finder.py</code>
-<br><br>
-To update or add data points at any time:<br>
-<ol><li>Update add.py with current file location of the APIurls.csv file, then:</li></ol>
-<code>python add.py</code>
-<br><br>
-To fully enable the Twilio text alert functionality:
-<ol><li>Sign up for a Twilio account at <a href="http://www.Twilio.com">Twilio</a></li>
-<li>Save your account keys in the "activate" file in the MCV/env/bin directory:</li>
-<code>export TWILIO_ACCOUNT_SID=YOUR_ACCOUNT_SID</code><br>
-<code>export TWILIO_AUTH_TOKEN=YOUR_AUTH_TOKEN</code><br>
-<code>export TWILIO_NUMBER=+1XXXXXXXXXXX</code>
-<li>In MVC directory, download and unzip from <a href="http://www.ngrok.com">ngrok</a></li>
-<code>source env/bin/activate</code><br>
-<code>python finder.py</code><br>
-<code>./ngrok 5000</code>
-<li>Update Twilio number settings for SMS with the ngrok URL/alerts</li>
-<li>Text codes to your new Twilio number</li>
-<li>Alerts are distributed with each run of Add.py</li>
-<li>Or, run scan.py to trigger alerts separately</li></ol>
-
-<p></p>
 <h2>File Directory:</h2>
 
 <p></p> 

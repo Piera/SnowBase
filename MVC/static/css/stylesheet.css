@@ -6,14 +6,6 @@ body {
 
 }
 
-
-/*h2#logo-script {
-    margin-top: 15px;
-    margin-bottom: 10px;
-    font-size: 35px;
-    font-family: 'Pacifico', Helvetica, sans-serif;
-}*/
-
 h2#logo-script {
 margin-top: 10px;
 margin-bottom: 5px;
@@ -22,9 +14,6 @@ font-size: 35px;
 font-family: 'Pacifico', Helvetica, sans-serif;
 }
 
-/*.navbar-form .form-control {
-    margin: 5px;
-}*/
 
 .navbar-form .form-control {
     margin: 0px;
@@ -59,7 +48,7 @@ div #home-div {
     margin-left: 0px;
     height: 495px;
     background-color: rgba(23,23,23, 0.6);
-    border-radius: 50%;
+    /*border-radius: 50%;*/
 }
 
 .home-list {
@@ -75,13 +64,13 @@ table#stations_data.table.table-hover tr { cursor: pointer; cursor: hand;
 }
 
 div #right-column {
-    min-width: 625px;
+    /*min-width: 625px;*/
 
 }
 
 div #map-gradient-key {
     padding: 5px;
-    width: 670px;
+    /*width: 670px;*/
     background: #00e1ff; /* Old browsers */
     background: -moz-linear-gradient(left,  #00e1ff 0%, #0000ff 42%, #e10000 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right top, color-stop(0%,#00e1ff), color-stop(42%,#0000ff), color-stop(100%,#e10000)); /* Chrome,Safari4+ */
@@ -94,7 +83,7 @@ div #map-gradient-key {
 
 #map-canvas {
     height: 465px;
-    width: 670px;
+    /*width: 670px;*/
     padding: 25px;
 }
 

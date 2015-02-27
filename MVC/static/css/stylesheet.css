@@ -7,15 +7,32 @@ body {
 }
 
 
-h2#logo-script {
+/*h2#logo-script {
     margin-top: 15px;
     margin-bottom: 10px;
     font-size: 35px;
     font-family: 'Pacifico', Helvetica, sans-serif;
+}*/
+
+h2#logo-script {
+margin-top: 10px;
+margin-bottom: 5px;
+margin-right: 15px;
+font-size: 35px;
+font-family: 'Pacifico', Helvetica, sans-serif;
 }
 
-.navbar-form .form-control {
+/*.navbar-form .form-control {
     margin: 5px;
+}*/
+
+.navbar-form .form-control {
+    margin: 0px;
+    vertical-align: super;
+}
+
+.btn {
+    vertical-align: super;
 }
 
 form#address-form {

@@ -17,8 +17,9 @@ Check it out: <strong><a href=http://snowbase-project.herokuapp.com/>SnowBase</a
 Please feel free to use the text alerts.
 
 What's next?
-<ul><li>~~Improve responsive breakpoints~~</li>
-<li>Improve performance on Heroku: currently working on incorporating geohashed coordinates</li></ul>
+<ul><li><strike>Improve responsive breakpoints</strike></li>
+<li>Improve performance on Heroku: currently working on incorporating geohashed coordinates for faster search</li>
+<li>Re-design home page view</li></ul>
 
 <h2>About SNOTEL:</h2>
 The SNOTEL system is a system of backcountry snow telemetry stations maintained by the USDA for the purposes of monitoring water resources.  There are 867 reporting stations located in the western United States, including Alaska.  

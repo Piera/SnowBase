@@ -4,6 +4,7 @@ import model
 import psycopg2
 from alerts import load_alert
 import operator
+import geohash
 from twilio.rest import TwilioRestClient
 from haversine import distance
 from jinja2 import Template
@@ -32,29 +33,23 @@ def lookup():
 	l = request.values.get("lat", 0, type=float)
 	g = request.values.get("lng", 0, type=float)
 	session["location"] = {"input":(l,g)}
-	print l, g
-	# Check if location is in Alaska. If in Alaska, search Alaska stations.
-	if l > 54:
-		# Alaska
-		stations = dbsession.query(model.Station).filter(model.Station.latitude > 54)
-	# Check if location is north of 45 degrees latitude.  If so, search north of 40 degrees.
-	if 54 > l > 45:
-		stations = dbsession.query(model.Station).filter(54 > model.Station.latitude > 40)
-	else:
-	# Search a slice of the continental US based on longitudinal partitions
-		if g < -120:
-			stations = dbsession.query(model.Station).filter(model.Station.longitude < -115)
-		if -120 < g < -115:
-			stations = dbsession.query(model.Station).filter(-125 < model.Station.longitude < -110)
-		if -115 < g < -110:
-			stations = dbsession.query(model.Station).filter(-120 < model.Station.longitude < -105)
-		if -110 < g < -105:
-			stations = dbsession.query(model.Station).filter(-115 < model.Station.longitude < -100)
-		if g > -105: 
-			stations = dbsession.query(model.Station).filter(-110 < model.Station.longitude)
+	# Geohash encode the input, then determine the expanded neighborhood based on expanded geohash
+	reference_location = geohash.encode(l, g)
+	location_box = geohash.expand(reference_location[:3])
+	neighborhoods = []
+	for place in location_box:
+		geohash_str = place + '%'
+		neighbor = dbsession.query(model.Station_Geohash).\
+			select_from(model.Station_Geohash).\
+			filter(model.Station_Geohash.geohash_loc.ilike(geohash_str)).\
+			all()
+		neighborhoods = neighborhoods + neighbor
 	dist_list = []
-	for station in stations:
+	# For all of the stations found in neighborhoods, check for data and snow. 
+	# If there is data and snow for a given station, add it to the list
+	for location in neighborhoods:
 		try: 
+			station = dbsession.query(model.Station).filter(model.Station.id == location.station_id).one()
 			snow = station.snow_data[-1]
 			origin = float(l), float(g)
 			destination = float(station.latitude), float(station.longitude)

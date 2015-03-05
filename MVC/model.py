@@ -24,6 +24,13 @@ class Station(Base):
     wind = Column(Boolean(50), unique=False)
     timezone = Column(Integer, nullable = True)
 
+class Station_Geohash(Base):
+    __tablename__ = "station_geohash"
+
+    id = Column(Integer, primary_key = True)
+    station_id = Column(Integer, ForeignKey('stations.id'))
+    geohash_loc = Column(String(50), nullable = False)
+
 class Snow_Data(Base):
     __tablename__ = "snow_data"
 

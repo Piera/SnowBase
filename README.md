@@ -84,7 +84,10 @@ The text alert system also reflects my commitment to simplicity; having users lo
 <li>alerts.py: Adds and updates alert data to alerts database
 <li>scan.py: Scans database for alerts, sends alerts
 <li>SnowDataParsed2014-11-08-0152Z.csv: Used to seed tables</li>
-<li>Snow.db: Including db, for running finder.py</li></ul>
+<li>Snow.db: Including db, for running finder.py</li>
+<li>geohashing.py: Geohashing algorithm</li>
+<li>seed_geohash.py: Seeds table with geohashed SnoTel station locations</li></ul>
+
 
 <p></p>
 <strong>Cron</strong>: Contains reference and scripts that are used to create files used for cron jobs, and the cron job scripts.

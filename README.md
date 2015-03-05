@@ -18,8 +18,9 @@ Please feel free to use the text alerts.
 
 What's next?
 <ul><li><strike>Improve responsive breakpoints</strike></li>
-<li>Improve performance on Heroku: currently working on incorporating geohashed coordinates for faster search</li>
-<li>Re-design home page view</li></ul>
+<li><strike>Improve performance on Heroku: currently working on incorporating geohashed coordinates for faster search</strike></li>
+<li><strike>Updated home page view</strike></li>
+<li>Add all stations to home page view map</li></ul>
 
 <h2>About SNOTEL:</h2>
 The SNOTEL system is a system of backcountry snow telemetry stations maintained by the USDA for the purposes of monitoring water resources.  There are 867 reporting stations located in the western United States, including Alaska.  
@@ -52,7 +53,7 @@ To account for missing data points, I determined a minimally viable dataset and 
 
 <strong>Search Performance:</strong> 
 
-SnowBase takes user input and uses Google Maps geocoding and the haversine formula to calculate the 10 closest stations in the database, returning the latest snow telemetry data for each.  This query is a classic example of a "Nearest Neighbor Search" problem.  My solution approach is to use geographical partitions to bucket the stations; only a subset of data is queried with each input.  I used benchmark location input to keep track of algorithm performance, and improved the benchmark search speed by approximately 2 seconds from the original brute-force algorithm.  I am interested in furthering the geo-partitioning algorithm and/or exploring other algorithmic solutions before upgrading the database.
+SnowBase takes user input and uses the Google Maps geocoding API and the haversine formula to calculate the 10 closest stations in the database, returning the latest snow telemetry data for each station that is actively reporting data, and has a snow depth > 0. This query is a classic example of a geospacial "Nearest Neighbor Search" problem. Not suprisingly, the brute force approach (calculating the distance from the location input to every station location in the database) did not perform well. The search is optimized by storing geohashed SnoTel station locations, and geohashing the user input. Because geohashes are strings, geographical proximity searches are easily performed using partial string match ("like") queries. In this case, the gohashed user location input is expanded in all directions to form a geographical "neighborhood" within which the 10 closest SnoTel stations can be derived. As I tested various solutions to improving performance, I timed outcomes against known benchmark locations input performance. Ultimately, I improved the locally hosted benchmark search speeds by over 3 seconds from the original brute-force algorithm performance. The image below reflects the benchmark performance of an intermediate geofencing solution, created using latitudinal or longitudinal bounds, which also proved suboptimal.
 
 ![ Benchmark search ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Benchmark_search.png)  
 

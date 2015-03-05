@@ -28,7 +28,7 @@ The SNOTEL system is a system of backcountry snow telemetry stations maintained 
 <p></p>
 <h2>Technologies:</h2>
 <p></p>
-<ul><li>SQLite</li>
+<ul><li>PostgreSQL</li>
 <li>Python</li>
 <li>Flask</li>
 <li>SQLAlchemy</li>
@@ -45,7 +45,7 @@ The SNOTEL system is a system of backcountry snow telemetry stations maintained 
 
 <strong>Data:</strong> 
 
-While the Powderlin.es API provides a robust service, the underlying mechanical system of the SNOTEL stations and system can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server. To shield the user from delays, and so that data is always available, I used an SQLite database to store data points that are collected daily.  
+While the Powderlin.es API provides a robust service, the underlying mechanical system of the SNOTEL stations and system can misfire, with stations serving missing data points, and the API experiencing the occasional delay from the USDA server. To shield the user from delays, and so that data is always available, I used a relational database (PostgreSQL) to store data points that are collected daily.  
 
 To account for missing data points, I determined a minimally viable dataset and filtered out non-viable data points and data sets. QA on data points is currently conducted by comparing data on the SNOTEL site to chart and graph values on SnowBase. I anticipate that the minimally viable set of data will evolve with user feedback.
 
@@ -53,17 +53,17 @@ To account for missing data points, I determined a minimally viable dataset and 
 
 <strong>Search Performance:</strong> 
 
-SnowBase takes user input and uses the Google Maps geocoding API and the haversine formula to calculate the 10 closest stations in the database, returning the latest snow telemetry data for each station that is actively reporting data, and has a snow depth > 0. This query is a classic example of a geospacial "Nearest Neighbor Search" problem. Not suprisingly, the brute force approach (calculating the distance from the location input to every station location in the database) did not perform well. The search is optimized by storing geohashed SnoTel station locations, and geohashing the user input. Because geohashes are strings, geographical proximity searches are easily performed using partial string match ("like") queries. In this case, the gohashed user location input is expanded in all directions to form a geographical "neighborhood" within which the 10 closest SnoTel stations can be derived. As I tested various solutions to improving performance, I timed outcomes against known benchmark locations input performance. Ultimately, I improved the locally hosted benchmark search speeds by over 3 seconds from the original brute-force algorithm performance. The image below reflects the benchmark performance of an intermediate geofencing solution, created using latitudinal or longitudinal bounds, which also proved suboptimal.
+SnowBase takes user input and uses the Google Maps geocoding API and the haversine formula to calculate the 10 closest stations in the database, returning the latest snow telemetry data for each station that is actively reporting data, and has a snow depth > 0. This query is a classic example of a geospacial "Nearest Neighbor Search" problem. Not suprisingly, the brute force approach (calculating the distance from the location input to every station location in the database) did not perform well. The search is optimized by storing geohashed SNOTEL station locations, and geohashing the user input. Because geohashes are strings, geographical proximity searches are easily performed using partial string match ("like") queries. In this case, the gohashed user location input is expanded in all directions to form a geographical "neighborhood" within which the 10 closest SNOTEL stations reporting snow can be derived. As I tested various solutions to improving performance, I timed outcomes against known benchmark locations input performance. Ultimately, I improved the locally hosted benchmark search speeds by over 3 seconds from the original brute-force algorithm performance. The image below reflects the benchmark performance of an intermediate geofencing solution, created using latitudinal or longitudinal bounds, which also proved suboptimal.
 
 ![ Benchmark search ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Benchmark_search.png)  
 
 <strong>Usability:</strong> 
 
-Existing SnoTel representations require users to zoom, scroll, and click to find the data for a given SNOTEL station and there is no way to compare data between SNOTEL stations. For this reason, I committed to making the interface extremely simple for the end user. I included a heatmap layer, gradient key, and marker indicators on the map, so that users can visually identify where the deepest snow is. Data is instantly accessed and compared; I used jQuery and d3 to effortlessly render trending data as the user clicks on the data chart. 
+Existing SNOTEL representations require users to zoom, scroll, and click to find the data for a given SNOTEL station and there is no way to compare data between SNOTEL stations. For this reason, I committed to making the interface extremely simple for the end user. I included a heatmap layer, gradient key, and marker indicators on the map, so that users can visually identify where the deepest snow is. Data is instantly accessed and compared; I used jQuery and d3 to effortlessly render trending data as the user clicks on the data chart. 
 
 ![ Comparison chart ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Comparison_chart.png)  
 
-The text alert system also reflects my commitment to simplicity; having users log in to set or manage text messages felt too cumbersome for the simple task of setting an alert.  Instead, users just text a code to the SnowBase phone number and the alert is set via the Twilio API. The user receives a single text alert when a station registers new snow, and in the same text are instructions for how to reset the alert.  Users can effectively manage their alerts from their phone without visiting SnowBase.  This light solution employs a data table and simple toggle.  Example text alert:
+The text alert system also reflects my commitment to simplicity; having users log in to set or manage text messages felt too cumbersome for the simple task of setting an alert.  Instead, users just text a code to the SnowBase phone number and the alert is set via the Twilio API. The user receives a single text alert when a station registers new snow, and in the same text are instructions for how to reset the alert.  Users can effectively manage their alerts from their phone without visiting SnowBase.  This light solution employs a data table and a boolean toggle system.  Example text alert:
 
 ![ Text Alert ](https://raw.githubusercontent.com/Piera/Project/master/MVC/Text_alert.jpg)  
 
@@ -86,7 +86,7 @@ The text alert system also reflects my commitment to simplicity; having users lo
 <li>SnowDataParsed2014-11-08-0152Z.csv: Used to seed tables</li>
 <li>Snow.db: Including db, for running finder.py</li>
 <li>geohashing.py: Geohashing algorithm</li>
-<li>seed_geohash.py: Seeds table with geohashed SnoTel station locations</li></ul>
+<li>seed_geohash.py: Seeds table with geohashed SNOTEL station locations</li></ul>
 
 
 <p></p>

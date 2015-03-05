@@ -2,8 +2,8 @@ body {
     padding: 20px;
     margin: 10px;
     font-family: 'Roboto';
-    padding-top: 65px;
-
+    padding-top: 72px;
+    background-image: url("IMG_0706.JPG");
 }
 
 h2#logo-script {
@@ -25,13 +25,21 @@ font-family: 'Pacifico', Helvetica, sans-serif;
 }
 
 form#address-form {
-    margin-left: 5px;
+    margin-left: 15px;
 
 }
 
 .navbar-default {
     background-color: #448AFF;
     border-color: #0D47A1;
+}
+
+.navbar-default .navbar-link {
+color: #000000;
+}
+
+.navbar-link a:hover{
+text-decoration: none;
 }
 
 #address {
@@ -56,7 +64,7 @@ div #home-div {
 
 }    
 
-.tall{
+.tall {
     height: 100px;
 }
 

@@ -58,6 +58,11 @@ $(document).ready(function() {
   // ---------- Main functionality: create location based snow report      
 
   $('#address-form').submit(function(evt) {
+
+    // ---------- Remove background image for report view
+
+    $('body').css({'background-image':'none'});
+
     evt.preventDefault();  
     clearAllMap(map);
     coordinates_array = [];

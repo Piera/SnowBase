@@ -1,8 +1,8 @@
 function barchart_depth (data) {
 
     var margin = {top: 30, right: 40, bottom: 40, left: 40},
-        width = 635 - margin.left - margin.right,
-        height = 255 - margin.top - margin.bottom;
+        width = 660 - margin.left - margin.right,
+        height = 260 - margin.top - margin.bottom;
     
     var x = d3.scale.ordinal()
         .rangeRoundBands([0, width], .2, .15);

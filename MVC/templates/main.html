@@ -19,10 +19,11 @@
             <form role="search" class="navbar-form navbar-left" id="address-form">
 
                 <div class ="form-group">
-                    <label for="inputLocation" class="addressInput"><h2 id="logo-script">&#x2744; Snowbase</h2></label>
+                    <label for="inputLocation" class="addressInput"><h2 id="logo-script">&#x2744; <a href="http://snowbase-project.herokuapp.com/" class="navbar-link">Snowbase</a></h2></label>
                     <input id="address" size="100" type="textbox" class="form-control" id="snow_field" value="Paradise, WA">
                     <input type="submit" class="btn btn-default" value="Search" id="find_snow">
-                    <input type="button" class="btn btn-primary" value="See All" id="see_all">
+                    <!-- <input type="button" class="btn btn-primary" value="See All" id="see_all"> -->
+                    <!-- Route needs performance optimzation -->
                 </div>
             </form>
 
@@ -56,10 +57,10 @@
 
             <div class="row" id="bottom-row">
                 <div class="col-md-6">
-                    <div id="barchart_density" class="chart"></div>
+                    <center><div id="barchart_depth" class="chart"></div></center>
                 </div> 
                 <div class="col-md-6">
-                    <div id="barchart_depth" class="chart"></div>
+                    <center><div id="barchart_density" class="chart"></div></center>
                 </div>
             </div>
 

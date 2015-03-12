@@ -29,6 +29,8 @@ def index():
 
 @app.route("/report", methods = ['GET','POST'])
 def lookup():
+	"""Calculate ten closest stations from input latitude and longitude, return data for ten closest stations as a JSON object."""
+
 	# From Google maps API:
 	l = request.values.get("lat", 0, type=float)
 	g = request.values.get("lng", 0, type=float)
@@ -79,6 +81,7 @@ def lookup():
 
 @app.route("/see_all", methods = ['GET','POST'])
 def see_all():
+	"""Return snow depth data for all stations."""
 	# See all functionality - returns all of the snow data to view in one heatmap
 	see_all = request.values.get("see_all", 0, type=int)
 	if see_all:
@@ -98,6 +101,7 @@ def see_all():
 
 @app.route("/charts", methods = ['GET','POST'])
 def charts():
+	"""Get telemetry data for station input from chart, return data as a JSON object"""
 	# With station name, return data to create d3 charts in display
 	station_name = request.args.get("station")
 	station = dbsession.query(model.Station).filter_by(name=station_name).one()
@@ -121,6 +125,15 @@ def charts():
 	
 @app.route("/alert", methods = ['GET','POST'])
 def alert():
+	"""
+	Check if values from text message input are valid integers, send error text message if invalid, set alert and send confirmation if valid.
+	
+	Error text triggers:
+	input < 0
+	input > 868
+	int(string) ValueError 
+	"""
+
 	print request.values
 	from_number = request.values.get('From')
 	station = request.values.get('Body')

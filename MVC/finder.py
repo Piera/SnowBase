@@ -1,6 +1,7 @@
 import os
 import json
 import model
+import heapq
 import psycopg2
 from alerts import load_alert
 import operator
@@ -48,35 +49,42 @@ def lookup():
 		neighborhoods = neighborhoods + neighbor
 	dist_list = []
 	# For all of the stations found in neighborhoods, check for data and snow. 
-	# If there is data and snow for a given station, add it to the list
+	# If there is data and snow for a given station, add it to the heap
 	for location in neighborhoods:
 		try: 
 			station = dbsession.query(model.Station).filter(model.Station.id == location.station_id).one()
 			snow = station.snow_data[-1]
-			origin = float(l), float(g)
-			destination = float(station.latitude), float(station.longitude)
-			kms = int(distance(origin, destination))
-			mi = int(0.621371*kms)
 			if snow.depth != None and snow.depth > 0:
-				if snow.water_equiv != None and snow.water_equiv != 0:
-					density = (int((snow.water_equiv / snow.depth) * 100))
-					if density > 100:
-							density = 100
-				else: 
-					density = "No Data" 
-				dist_list.append({'dist':mi, 'text-code':station.id, 'id':station.given_id, 'ele':station.elevation,\
-					'lat':station.latitude, 'lng':station.longitude, 'name':station.name, 'depth':snow.depth,\
-				'depth_change':snow.depth_change, 'density':density, 'date':snow.date.strftime("%m/%d/%y %H:%M")})
+				origin = float(l), float(g)
+				destination = float(station.latitude), float(station.longitude)
+				kms = int(distance(origin, destination))
+				mi = int(0.621371*kms)
+				heapq.heappush(dist_list, (mi, station.id))
 			else:
 				continue
 		except IndexError:
 			continue
 	# Return the 10 closest stations, their distances away in miles (converted from kms)
 	#  and basic telemetry data for that station
-	closest_sta = sorted(dist_list, key=lambda k: k['dist'])[0:10]
-	time_stamps = [x['date'] for x in closest_sta]
+	closest_sta = [heapq.heappop(dist_list) for i in range(10)]
+	responses_list = []
+	for station in closest_sta:
+		mi = station[0]
+		station = dbsession.query(model.Station).filter(model.Station.id == station[1]).one()
+		snow = station.snow_data[-1]
+		if snow.water_equiv != None and snow.water_equiv != 0:
+			density = (int((snow.water_equiv / snow.depth) * 100))
+			if density > 100:
+				density = 100
+			if density == None:
+				density = "No Data" 
+		responses_list.append({'dist':mi, 'text-code':station.id, 'id':station.given_id, 'ele':station.elevation,\
+				'lat':station.latitude, 'lng':station.longitude, 'name':station.name, 'depth':snow.depth,\
+				'depth_change':snow.depth_change, 'density':density, 'date':snow.date.strftime("%m/%d/%y %H:%M")})
+
+	time_stamps = [x['date'] for x in responses_list]
 	time_stamp = max(time_stamps)
-	response = json.dumps({"closest": closest_sta, "time_stamp":time_stamp})
+	response = json.dumps({"closest": responses_list, "time_stamp":time_stamp})
 	return response
 
 @app.route("/see_all", methods = ['GET','POST'])

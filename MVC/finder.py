@@ -1,3 +1,16 @@
+"""
+finder.py
+
+Main application file for SnowBase. 
+
+Scripts for: 
+	Serve main template.
+	From user input (lat lng, calculate ten closest stations and return JSON object with data.
+	From table input, return JSON objects with data for rendering charts.
+	Return JSON objects for all station data.
+	From user input (station ID), set new snow alert.
+"""
+
 import os
 import json
 import model

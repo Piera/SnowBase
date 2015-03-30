@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+"""
+seed_geohash.py
+
+Seed Station_Geohash table in db with geohashed values for each station location.
+"""
 import model
 import geohash
 from model import session

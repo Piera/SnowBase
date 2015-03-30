@@ -1,4 +1,18 @@
 #!/usr/bin/env python
+"""
+add.py
+
+Update db with snow telemetry data from Powderlin.es API.
+
+Call API for every station in 'API_URLS' file.
+If there are no snow data entries in the db for the station, create an entry.
+
+Else: 
+
+Compare dates; if date is the same, update db with new snow telemetry data. 
+If dates are different, create a new entry in db.
+"""
+
 import os
 import json
 import csv

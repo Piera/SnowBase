@@ -1,3 +1,10 @@
+"""
+alerts.py
+
+Create an alert record in alert table in db when user creates a new alert.
+After sending alert, update alert status to False.
+"""
+
 import os
 import model
 from model import Alert

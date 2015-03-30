@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+"""
+seed.py
+
+Seed db tables with Stations data, snow telemetry data from csv file, 
+	snow telemetry data from Powderlin.es API urls.
+"""
+
 import json
 import csv
 import ast # Converts "True" and "False" to boolean values

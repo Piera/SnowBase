@@ -1,3 +1,10 @@
+"""
+model.py
+
+Create data models for Stations, Station_Geohash, Snow_Data, Alerts.
+Create tables and add data.
+"""
+
 import os
 import psycopg2
 from sqlalchemy.ext.declarative import declarative_base

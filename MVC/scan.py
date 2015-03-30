@@ -1,3 +1,10 @@
+"""
+scan.py
+
+Scan alert table for stations with snow_depth change > 0 and alerts set to True.
+Send new snow alert to user if snow_depth change > 0 and alert status is True.
+"""
+
 import os
 import model
 import operator

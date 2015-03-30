@@ -1,7 +1,12 @@
 # coding: UTF-8
 """
+geohash.py
+
 Copyright (C) 2009 Hiroaki Kawai <kawai@iij.ad.jp>
+
+From lat lng coordinates, return string representation of lat lon.
 """
+
 try:
 	import _geohash
 except ImportError:

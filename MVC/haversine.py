@@ -2,6 +2,13 @@
 
 # Haversine formula example in Python
 # Author: Wayne Dyck
+"""
+haversine.py
+
+Calculate distance between two lat lng coordinates;
+take into account the curvature of Earth.
+Return distance in km.
+"""
 
 import math
 

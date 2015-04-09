@@ -12,15 +12,9 @@ Hackbright Final Project: SnowBase
 
 <p></p>
 
-<h2>SnowBase is deployed on Heroku!</h2>
-Check it out: <strong><a href=http://snowbase-project.herokuapp.com/>SnowBase</a></strong>
-Please feel free to use the text alerts.
-
-What's next?
-<ul><li><strike>Improve responsive breakpoints</strike></li>
-<li><strike>Improve performance on Heroku: currently working on incorporating geohashed coordinates for faster search</strike></li>
-<li><strike>Updated home page view</strike></li>
-<li>Add all stations to home page view map</li></ul>
+<h2>Visit SnowBase online:</h2>
+Check it out: <strong><a href=http://snow-base.com>SnowBase</a></strong>
+  Please feel free to use the text alerts!
 
 <h2>About SNOTEL:</h2>
 The SNOTEL system is a system of backcountry snow telemetry stations maintained by the USDA for the purposes of monitoring water resources.  There are 867 reporting stations located in the western United States, including Alaska.  
@@ -102,5 +96,3 @@ The text alert system also reflects my commitment to simplicity; having users lo
 <li>APIurls_short.csv:  short csv file of API urls for testing purposes.</li>
 <li>KEY: Key for parsing the output from the parsed_cron.py file.</li>
 <li>Various csv files are included as sample output</li></ul>
-
-

@@ -13,7 +13,7 @@ Hackbright Final Project: SnowBase
 <p></p>
 
 <h2>Visit SnowBase online:</h2>
-Check it out: <strong><a href=http://snow-base.com>SnowBase</a></strong>
+Check it out: <strong><a href=http://www.snow-base.com>SnowBase</a></strong>
   Please feel free to use the text alerts!
 
 <h2>About SNOTEL:</h2>

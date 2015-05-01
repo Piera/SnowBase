@@ -69,7 +69,7 @@ The text alert system also reflects my commitment to simplicity; having users lo
 <strong>MVC</strong>: Contains flask app files, and reference/scripts needed to create the database of stations and snow telemetry data points.
 <p></p>
 <ul><li>requirements.txt: Requirements for virtual environment.</li>
-<li>finder.py: Flask app for simple capture of lat/long, returns closest stations with data.</li>
+<li>app.py: Flask application for capture of lat/long, returns closest stations with telemetry data.</li>
 <li>haversine.py: Computation for distance between two points given lat/long for each.</li>
 <li>static and template folders: contain files for view rendering</li>
 <li>model.py:  Create data tables, or add to data tables</li>
